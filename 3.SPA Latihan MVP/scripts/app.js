@@ -13,8 +13,9 @@ export default class App {
     const route = routes[routeName];
 
     // Get page instance
-    const page = route();
+    const page = new route();
 
     this.#content.innerHTML = await page.render();
+    await page.afterRender();
   }
 }
