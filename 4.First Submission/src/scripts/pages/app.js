@@ -1,5 +1,6 @@
 import { resolveRoute } from '../routes/url-parser';
-import { isLoggedIn } from '../utils/auth';
+import { clearAuthData, isLoggedIn } from '../utils/auth';
+
 
 class App {
   #content = null;
@@ -9,9 +10,13 @@ class App {
   constructor({ navigationDrawer, drawerButton, content }) {
     this.#content = content;
     this.#drawerButton = drawerButton;
-    this.#navigationDrawer = navigationDrawer;
+    this.#navigationDrawer = navigationDrawer; 
 
+    if(window.location.hash === "#/" || window.location.hash === "" || window.location.hash==="/#"){
+      window.location.hash = "#/homepage";
+    }
     this._setupDrawer();
+    this.renderPage()
   }
 
   _setupDrawer() {
@@ -34,9 +39,9 @@ class App {
 
   _updateNavigation(){
     const authLinks = isLoggedIn() ? `
-      <li><a href="#/dashboard">Dashboard</a></li>
+      <li><a href="#/homepage">Homepage</a></li>
       <li><a href="#/about">About</a></li>
-      <li><button id="logoutBtn">Logout</button></li>
+      <li><button id="logoutBtn" >Logout</button></li>
     ` : `
       <li><a href="#/login">Login</a></li>
       <li><a href="#/register">Register</a></li>
@@ -49,6 +54,7 @@ class App {
       logoutBtn.addEventListener('click', () => {
         clearAuthData();
         window.location.hash = '#/login';
+        console.log("LOGOUT SUCCESS!")
       });
     }
   }

@@ -21,11 +21,15 @@ function constructRouteFromSegments(pathSegments) {
     pathname = pathname.concat('/:id');
   }
 
-  return pathname || '/';
+  return pathname || '/homepage';
 }
 
 export function getActivePathname() {
-  return location.hash.replace('#', '') || '/';
+  const rawHash = location.hash.replace("#","");
+  if(rawHash==="/" || rawHash===""){
+    return "/homepage";
+  }
+  return rawHash;
 }
 
 export function getActiveRoute() {
@@ -51,16 +55,19 @@ export function parsePathname(pathname) {
 export function resolveRoute() {
   const path = getActivePathname();
   const routePattern = getActiveRoute();
-  const route = routes[routePattern];
+  const route = routes[routePattern]
 
-  // Auth check logic
+  if (path === "/"){
+    return {redirect : "#/hompage"};
+  }
+
   if (route?.authRequired && !isLoggedIn()) {
     return { redirect: '#/login' };
   }
   
   if (route?.redirectIfAuth && isLoggedIn()) {
-    return { redirect: '#/' };
+    return { redirect: '#/homepage' };
   }
 
-  return route || routes["/"];
+  return route || routes["#/homepage"];
 }

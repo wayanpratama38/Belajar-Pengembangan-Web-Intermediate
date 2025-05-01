@@ -167,6 +167,24 @@ header {
   margin-bottom: 10px;
 }
 
+.logout-button{
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border:0;
+  color: black;
+  background-color: red;
+}
+
+.logout-button:hover{
+  background-color: darkred;
+  transform: translateY(-1px);
+  cursor: pointer;
+}
+
+.logout-button:active{
+  transform: translateY(0px);
+}
+
 .confirm-button:hover{
   background-color: #2980b9;
   transform: translateY(-1px);

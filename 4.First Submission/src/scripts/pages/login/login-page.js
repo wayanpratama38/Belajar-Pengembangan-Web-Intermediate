@@ -63,7 +63,7 @@ export default class LoginPage{
                         token:loginResult.token
                     })
 
-                    window.location.hash = "#/"
+                    window.location.hash = "#/homepage"
                 }
             }catch(error){
                 console.log(error)

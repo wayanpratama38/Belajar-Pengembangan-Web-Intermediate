@@ -4,7 +4,7 @@ import RegisterPage from '../pages/register/register-page.js';
 import LoginPage from '../pages/login/login-page.js';
 
 const routes = {
-  '/': {
+  '/homepage': {
     component : new HomePage(),
     authRequired : true,
     title : "Home"
