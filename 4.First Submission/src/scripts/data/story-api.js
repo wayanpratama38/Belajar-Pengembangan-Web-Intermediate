@@ -10,7 +10,8 @@ const StoryModel = {
     const response = await fetch(ENDPOINTS.STORIES,{
       headers : {
         "Authorization" :`Bearer ${getAuthToken()}` 
-      }
+      },
+      cache: "reload"
     })
     return response.json();
   },

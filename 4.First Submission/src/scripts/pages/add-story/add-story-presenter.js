@@ -39,9 +39,6 @@ export default class AddStoryPresenter{
 
     capturePhoto(){
         if(!this.#mediaStream) return;
-        // const photoData = this.#view.captureCameraFrame();
-        // this.#capturedPhoto = photoData;
-        // this.#stopMediaStream();
         return this.#view.captureCameraFrame();
     }
 
@@ -65,7 +62,6 @@ export default class AddStoryPresenter{
                 this.#capturedPhoto = e.target.result;
             };
             reader.readAsDataURL(file);
-            console.log("NAMA FILE YANG DIUNGGAH : ",file.name)
         }
     }
 
@@ -75,7 +71,6 @@ export default class AddStoryPresenter{
                 this.#geoLocation = await this.#getCurrentLocation();
                 this.#view.setLocationStatus(true);
             } catch (error) { 
-                console.log("ERROR GETTING LOCATION : ",error);
                 this.#view.showLocationError("GAGAL MENDAPATKAN LOKASI");
                 this.#view.setLocationStatus(false);
             }

@@ -6,7 +6,6 @@ export default class AddStoryPage{
     #photoCanvasElement;
     #capturedCameraDataURL = null;
 
-
     constructor(){
         this.#presenter = new AddStoryPresenter({view : this});
     }
@@ -24,7 +23,6 @@ export default class AddStoryPage{
                         <i class="fas fa-camera"></i>
                         </button>
                     </div>
-
 
                     <div class="form-group">
                         <label for="description">Deskripsi</label>
@@ -106,7 +104,6 @@ export default class AddStoryPage{
         this.#photoCanvasElement.width = width;
         this.#photoCanvasElement.height = height;
         context.drawImage(this.#videoElement, 0, 0, width, height);
-        console.log(this.#photoCanvasElement.toDataURL('image/jpeg',0.8))
         return this.#photoCanvasElement.toDataURL('image/jpeg',0.8);
     }
 
@@ -129,7 +126,6 @@ export default class AddStoryPage{
     
     showStoryAddedMessage() {
         const successMessageElement = document.getElementById('successMessage');
-        console.log("Elemen successMessage:", successMessageElement);
         if (successMessageElement) {
             successMessageElement.removeAttribute('hidden');
             setTimeout(() => {
@@ -149,8 +145,8 @@ export default class AddStoryPage{
         const photoDataURL = this.#presenter.capturePhoto();
         if (photoDataURL) {
           this.#capturedCameraDataURL = photoDataURL;
-          console.log("HANLDE CAPTURE BUTTON CLICK", photoDataURL);
-          // Optional: Tampilkan preview foto yang diambil di canvas
+          this.#videoElement.style.display = 'none';
+          this.#photoCanvasElement.removeAttribute('hidden')
         }
       }
     
@@ -169,7 +165,6 @@ export default class AddStoryPage{
         }
 
         await this.#presenter.submitStory(formData);
-        console.log("SUCCESS HANDLE SUBMIT!")
     }
     
     destroy() {
