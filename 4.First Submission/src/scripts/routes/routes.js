@@ -1,8 +1,8 @@
 import HomePage from '../pages/home/home-page.js';
-import AboutPage from '../pages/about/about-page.js';
 import RegisterPage from '../pages/register/register-page.js';
 import LoginPage from '../pages/login/login-page.js';
 import AddStoryPage from '../pages/add-story/add-story-page.js';
+import MapPage from '../pages/map/map-page.js';
 
 const routes = {
   '/homepage': {
@@ -10,10 +10,10 @@ const routes = {
     authRequired : true,
     title : "Home"
   },
-  '/about':{
-    component : new AboutPage(),
+  '/map':{
+    component : new MapPage(),
     authRequired : true,
-    title : "About"
+    title : "Map"
   },
   '/add-story':{
     component : new AddStoryPage(),

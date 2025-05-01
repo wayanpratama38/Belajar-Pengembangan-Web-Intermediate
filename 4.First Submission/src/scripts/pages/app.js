@@ -40,7 +40,7 @@ class App {
   _updateNavigation(){
     const authLinks = isLoggedIn() ? `
       <li><a href="#/homepage">Homepage</a></li>
-      <li><a href="#/about">About</a></li>
+      <li><a href="#/map">Map</a></li>
       <li><a href="#/add-story">Add Story</a><li>
       <li><button id="logoutBtn" >Logout</button></li>
     ` : `

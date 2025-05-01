@@ -1,4 +1,4 @@
-export default class AboutPage {
+export default class MapPage {
   async render() {
     return `
       <section class="container">

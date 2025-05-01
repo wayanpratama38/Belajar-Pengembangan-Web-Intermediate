@@ -7,7 +7,8 @@ const ENDPOINTS = {
 
 const StoryModel = {
   async getAllStories() {
-    const response = await fetch(ENDPOINTS.STORIES,{
+    const size = 12;
+    const response = await fetch(`${ENDPOINTS.STORIES}?size=${size}`,{
       headers : {
         "Authorization" :`Bearer ${getAuthToken()}` 
       },
