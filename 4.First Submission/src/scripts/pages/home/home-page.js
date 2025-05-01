@@ -1,9 +1,13 @@
 import StoryCard from "../../components/story-card";
-import { getAllStories } from "../../data/api";
+import { getAllStories } from "../../data/story-api";
+import HomePresenter from "./home-presenter";
+import { StoryModel } from "../../data/story-api";
 
 export default class HomePage {
+  #presenter;
+  #storiesContainer;
+
   async render() {
-    const stories = await getAllStories();
     return `
       <section class="container">
         <div class="heading--container">
@@ -11,15 +15,39 @@ export default class HomePage {
           <p>Disini tempat dimana kamu berbagi dan melihat story!</p>
         </div>
         <div class="stories-container">
-          ${stories.listStory.map(story => `
-            ${new StoryCard(story).render()}
-          `).join('')}
         </div>
       </section>
     `;
   }
 
   async afterRender() {
-    // Do your job here
+    this.#storiesContainer = document.querySelector(".stories-container");
+    if(this.#storiesContainer){
+      this.#presenter = new HomePresenter({
+        view: this,
+      });
+      await this.#presenter.init();
+    } else {
+      console.log("Element dengan class 'stories-container' tidak ditemukan di DOM.")
+    }
+  }
+
+  showStories(stories){
+    if (this.#storiesContainer) { 
+      this.#storiesContainer.innerHTML = stories
+        .map((story) => new StoryCard(story).render())
+        .join('');
+    } else {
+      console.error("Element dengan class 'stories-container' tidak ditemukan di DOM.");
+    }
+  }
+
+  showError(message){
+    if (this.#storiesContainer) { 
+      this.#storiesContainer.innerHTML = `<p class="error-message">${message}</p>`;
+    } else {
+      console.error("Element dengan class 'stories-container' tidak ditemukan di DOM.");
+      
+    }
   }
 }

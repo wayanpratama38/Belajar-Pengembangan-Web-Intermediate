@@ -1,4 +1,6 @@
-import { registerUser } from "../../data/api";
+import { registerUser } from "../../data/auth-api";
+
+
 
 export default class RegisterPage{
     async render(){

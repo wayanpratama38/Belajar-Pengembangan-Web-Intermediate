@@ -1,4 +1,5 @@
-import { loginUser } from "../../data/api";
+
+import { loginUser } from "../../data/auth-api.js";
 import { setAuthData } from "../../utils/auth.js";
 
 export default class LoginPage{
