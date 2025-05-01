@@ -1,12 +1,14 @@
 * {
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
 }
 
 body {
   font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color : #333;
+  overflow-x: hidden;
 }
 
 .container {
@@ -15,42 +17,57 @@ body {
   max-width: 1300px;
 }
 
+section {
+  background-color: lightskyblue;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
 header {
   background-color: lightskyblue;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  position: sticky;
+  top: 0; 
+  z-index: 1000; 
 }
 
 .main-header {
-  min-height: 90px;
-  padding-block: 20px;
-
+  min-height: 60px;
+  padding-block: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
 }
 
 .brand-name {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: bold;
   text-decoration: none;
   color: #333;
+  background-color: whitesmoke;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  display: inline-block; 
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out;
 }
 
 .navigation-drawer {
   min-height: 100vh;
-  width: 200px;
-  padding: 20px 10px;
+  width: 250px;
+  padding: 20px 15px;
   background-color: #fff;
-
   position: fixed;
   inset-block-start: 0;
   inset-inline-start: 0;
-
-  box-shadow: 0 0 4px 2px #00000033;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   transform: translateX(-100%);
-  transition: transform 350ms;
-
+  transition: transform 350ms ease-in-out;
   z-index: 9999;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .navigation-drawer.open {
@@ -58,44 +75,50 @@ header {
 }
 
 .drawer-button {
-  padding: 8px;
+  padding: 5px;
   border: 0;
   border-radius: 4px;
-
   display: inline-block;
   background-color: transparent;
-
   font-weight: bold;
-  font-size: 28px;
+  font-size: 24px;
   color: #141e16;
-
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.drawer-button:hover {
+  opacity: 0.8;
 }
 
 .nav-list {
   list-style: none;
-
   display: flex;
   flex-direction: column;
-  gap: 10px 20px;
+  gap: 12px 5px;
+  margin-top: 15px;
 }
 
 .nav-list li a {
-  padding: 6px 10px;
-
+  padding: 0.8rem 1rem;
   display: block;
-  
   color: #333;
+  font-weight: bold;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
+  font-size: 1rem;
   text-decoration: none;
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out;
 }
 
-.nav-list li a:hover {
-  text-decoration: underline;
+.brand-name:hover, .nav-list li a:hover {
+  transform: translateY(-2px);
+  background-color: wheat;
 }
 
 /* MAIN */
 .main-content {
-  padding-block: 20px;
+  padding-block: 15px;
 }
 
 /* Write your styles more here */
@@ -103,35 +126,44 @@ header {
 .container-flex  {
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  align-items: center;
+  padding: 1rem;
 }
 
 .container-flex-form{
   background: #ffffff;
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
+  margin-inline: auto;
 }
 
 .container-flex-form h1 {
   color: #2c3e50;
-  font-size: 1.8rem;
-  margin-bottom: 0.2rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
   text-align: center;
   font-weight: 600;
 }
 
 .container-flex-form p{
   text-align: center;
-  font-size: small;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
+  color : #555;
 }
 
 .container-flex-form a{
   text-decoration: none;
   color: blue;
+  transition: color 0.2s;
+}
+
+.container-flex-form a:hover {
+  text-decoration: underline;
+  color: #0056b3;
 }
 
 .form-group{
@@ -144,11 +176,12 @@ header {
   color: grey;
   font-weight: bold;
   font-size: small;
+  margin-bottom: 5px;
 }
 
 .form-group input{
   border-radius: 0.2rem;
-  padding: 0.3rem;
+  padding: 0.7rem 0.5rem;
 }
 
 .form-group input:focus {
@@ -157,34 +190,41 @@ header {
   box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
 }
 
+/* Button Styles Cihuy */
 .confirm-button{
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 0;
-  color: white;
   background-color: green;
-  margin-bottom: 10px;
-}
-
-.logout-button{
-  padding: 0.5rem;
+  color: white;
+  width: 100%;
   border-radius: 0.5rem;
-  border:0;
-  color: black;
-  background-color: red;
-}
-
-.logout-button:hover{
-  background-color: darkred;
-  transform: translateY(-1px);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  padding: 0.8rem 1.5rem;
+  border: none;
   cursor: pointer;
 }
 
-.logout-button:active{
-  transform: translateY(0px);
+.confirm-button:disabled{
+  background: #95a5a6;
+  cursor: not-allowed;
 }
 
+#logoutBtn{
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  border:0;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  transform: translateY(0px);
+
+}
+
+#logoutBtn:hover{
+  background-color: darkred;
+  transform: translateY(-1px);
+}
 .confirm-button:hover{
   background-color: #2980b9;
   transform: translateY(-1px);
@@ -195,6 +235,7 @@ header {
   transform: translateY(0px);
 }
 
+/* Story Card XD */
 .story-card {
   background: #fff;
   border-radius: 12px;
@@ -260,9 +301,12 @@ header {
 .heading--container{
   justify-content: center;
   text-align: center;
+  background-color: whitesmoke;
+  border-radius: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
-/* CAMERA */
+/* CAMERA STYLES :'(*/
 .add-story {
   max-width: 600px;
   margin: 0 auto;
@@ -309,22 +353,6 @@ header {
   margin: 1rem 0;
 }
 
-.submit-btn {
-  background: #3498db;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 1rem;
-}
-
-.submit-btn:disabled {
-  background: #95a5a6;
-  cursor: not-allowed;
-}
-
 .error-message {
   color: #e74c3c;
   padding: 1rem;
@@ -333,7 +361,7 @@ header {
   background: #fdedec;
 }
 
-/* MAP */
+/* MAP ;-; */
 #mapContainer{
   height: 400px;
   width: 100%;
@@ -388,34 +416,420 @@ header {
   margin: 15px 0;
 }
 
-.error-message {
-  color: #d32f2f;
-  margin-bottom: 10px;
+
+@keyframes vt-fade-out-slide-left {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(-100px) scale(0.8); }
 }
 
-.error-actions {
-  margin-top: 10px;
-  text-align: center;
+@keyframes vt-fade-in-slide-right {
+  from { opacity: 0; transform: translateX(100px) scale(0.8); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-.retry-button {
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
+
+@keyframes vt-slide-up-fade-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-50px); opacity: 0; }
 }
 
-.retry-button:hover {
-  background-color: #1976d2;
-}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding-inline: 15px; /* Reduce container padding */
+  }
+
+  section {
+    padding: 1rem; /* Reduce section padding */
+    margin-bottom: 1rem; /* Adjust margin bottom */
+  }
+
+  .main-header {
+    padding-block: 10px; /* Adjust header padding */
+    gap: 10px; /* Further reduce gap */
+  }
+
+  .brand-name {
+     font-size: 0.9rem; /* Further reduce brand name font size */
+     padding: 0.3rem 0.6rem; /* Adjust padding */
+     border-radius: 0.8rem; /* Adjust border radius */
+  }
+
+  .drawer-button {
+      font-size: 22px; /* Slightly smaller drawer button icon */
+      padding: 4px; /* Adjust padding */
+  }
+
+  .nav-list {
+    gap: 10px 0; /* Adjust gap */
+  }
+
+   .nav-list li a {
+      padding: 0.7rem 0.8rem; /* Adjust padding */
+      font-size: 0.95rem; /* Adjust font size */
+      border-radius: 0.4rem; /* Adjust border radius */
+   }
+
+
+  .stories-container {
+    gap: 1rem; /* Reduce gap in stories grid */
+    padding: 1rem; /* Reduce padding around stories grid */
+    /* The minmax(250px, 1fr) allows it to go down to 250px columns */
+  }
+
+  .story-content {
+    padding: 0.8rem; /* Reduce padding within story cards */
+  }
+
+  .story-title {
+    font-size: 1rem; /* Adjust story title size */
+    margin-bottom: 0.3rem; /* Adjust margin */
+  }
+
+  .story-description {
+    font-size: 0.85rem; /* Adjust story description size */
+    line-height: 1.5;
+    margin-bottom: 0.6rem; /* Adjust margin */
+    -webkit-line-clamp: 5; /* Allow a bit more lines */
+    line-clamp: 5;
+  }
+
+  .story-date {
+      font-size: 0.75rem; /* Adjust date font size */
+  }
+
+  .container-flex {
+    padding: 0.8rem; /* Adjust padding for flex containers */
+  }
+
+  .container-flex-form {
+    padding: 1.2rem; /* Adjust form container padding */
+  }
+
+  .container-flex-form h1 {
+    font-size: 1.4rem; /* Adjust form heading size */
+    margin-bottom: 0.6rem;
+  }
+
+  .container-flex-form p {
+    font-size: 0.85rem; /* Adjust paragraph size */
+    margin-bottom: 0.8rem;
+  }
+
+  .form-group {
+      margin-bottom: 12px; /* Adjust margin */
+  }
+
+  .form-group label {
+      font-size: 0.8rem; /* Adjust label size */
+      margin-bottom: 3px;
+  }
+
+  .form-group input {
+      padding: 0.6rem 0.5rem; /* Adjust input padding */
+      font-size: 0.95rem; /* Adjust input font size */
+  }
+
+  .confirm-button,
+  #logoutBtn {
+      padding: 0.7rem 1rem; /* Adjust button padding */
+      font-size: 0.95rem; /* Adjust font size */
+  }
+
+  .confirm-button {
+      margin-bottom: 8px; /* Adjust margin */
+  }
+
+
+   .add-story {
+      padding: 0.8rem; /* Adjust add story page padding */
+      margin: 1rem auto; /* Adjust add story page margin */
+      box-shadow: none; /* Remove shadow to make it lighter */
+      border-radius: 0; /* Remove border radius */
+   }
+
+    .camera-view {
+        max-height: 250px; /* Further reduce max height of camera view */
+    }
+
+    .photos-canvas{
+      max-height: 250px;
+    }
+
+    .capture-btn {
+        width: 45px; /* Even smaller capture button */
+        height: 45px;
+        bottom: 0.6rem; /* Adjust position */
+    }
+
+    .capture-btn::after {
+        width: 20px; /* Adjust inner circle size */
+        height: 20px;
+    }
+
+    .file-input {
+        margin-top: 0.6rem;
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .location-group {
+        margin: 1rem 0;
+    }
+
+    .location-group label {
+        font-size: 0.8rem;
+    }
+
+    .location-group input[type="text"] {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+
+    .error-message { /* Error message within forms */
+        padding: 0.6rem;
+        margin-top: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    #mapContainer {
+        height: 250px; /* Further reduce map height */
+        margin-top: 10px;
+    }
+
+    .image-popup {
+        max-width: 60px; /* Adjust map popup image size */
+        max-height: 60px;
+    }
+
+  
+    .loading-spinner {
+        width: 35px; /* Smaller spinner */
+        height: 35px;
+        border-width: 3px;
+    }
+
+    .loading-text {
+        font-size: 0.95rem; /* Adjust loading text size */
+    }
+
+    .error-container { /* Full page error container */
+        padding: 10px; /* Reduce padding */
+        margin: 10px auto; /* Reduce margin */
+        max-width: 95%; /* Use more width */
+    }
+
+    .error-message { /* Full page error message */
+        font-size: 0.9rem; /* Adjust font size */
+    }
+
+    .retry-button {
+        padding: 8px 16px; /* Adjust button padding */
+        font-size: 0.9rem;
+    }
+}
+
+/* Styles for screens smaller than 480px (Very Small Mobile) */
+@media screen and (max-width: 480px) {
+  .container {
+    padding-inline: 10px;
+    margin: 0 5px; /* Further reduce container padding */
+  }
+
+  section {
+      padding: 0.8rem; /* Further reduce section padding */
+      border-radius: 1rem; /* Adjust border radius */
+  }
+
+  .main-header {
+    padding-block: 8px; /* Further adjust header padding */
+    gap: 8px; /* Further reduce gap */
+  }
+
+  .brand-name {
+     font-size: 0.85rem; /* Further reduce brand name font size */
+     padding: 0.2rem 0.5rem; /* Adjust padding */
+     border-radius: 0.6rem; /* Adjust border radius */
+  }
+
+  .drawer-button {
+      font-size: 20px; /* Even smaller drawer button icon */
+      padding: 3px; /* Adjust padding */
+  }
+
+   .nav-list {
+    gap: 8px 0; /* Adjust gap */
+  }
+
+   .nav-list li a {
+      padding: 0.6rem 0.7rem; /* Adjust padding */
+      font-size: 0.9rem; /* Adjust font size */
+      border-radius: 0.3rem; /* Adjust border radius */
+   }
+
+
+  .stories-container {
+    gap: 0.8rem; /* Further reduce gap */
+    padding: 0.8rem; /* Further reduce padding */
+  }
+
+  .story-content {
+    padding: 0.6rem; /* Further reduce padding */
+  }
+
+  .story-title {
+    font-size: 0.95rem; /* Further adjust title size */
+    margin-bottom: 0.2rem;
+  }
+
+  .story-description {
+    font-size: 0.8rem; /* Further adjust description size */
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    -webkit-line-clamp: 6; /* Allow slightly more lines */
+    line-clamp: 6;
+  }
+
+  .story-date {
+      font-size: 0.7rem; /* Further adjust date size */
+  }
+
+  .container-flex {
+    padding: 0.5rem; /* Further adjust padding */
+  }
+
+  .container-flex-form {
+      padding: 1rem; /* Further adjust form padding */
+      border-radius: 8px; /* Adjust border radius */
+  }
+
+  .container-flex-form h1 {
+      font-size: 1.3rem; /* Further adjust heading size */
+      margin-bottom: 0.5rem;
+  }
+
+  .container-flex-form p {
+      font-size: 0.8rem; /* Further adjust paragraph size */
+      margin-bottom: 0.6rem;
+  }
+
+   .form-group {
+      margin-bottom: 10px; /* Adjust margin */
+  }
+
+  .form-group label {
+      font-size: 0.75rem; /* Adjust label size */
+      margin-bottom: 2px;
+  }
+
+   .form-group input {
+      padding: 0.4rem 0.4rem; /* Adjust input padding */
+      font-size: 0.9rem; /* Adjust input font size */
+  }
+
+  .confirm-button,
+  #logoutBtn {
+      padding: 0.6rem 0.8rem; /* Adjust button padding */
+      font-size: 0.9rem; /* Adjust font size */
+  }
+
+   .confirm-button {
+      margin-bottom: 6px; /* Adjust margin */
+  }
+
+
+   .add-story {
+      padding: 0.5rem; /* Further adjust add story page padding */
+      margin: 0.8rem auto; /* Adjust add story page margin */
+   }
+
+    .camera-view {
+        max-height: 200px; /* Further reduce max height */
+    }
+
+    .photos-canvas{
+      max-height: 200px;
+    }
+
+    .capture-btn {
+        width: 40px; /* Even smaller capture button */
+        height: 40px;
+         bottom: 0.5rem; /* Adjust position */
+    }
+
+    .capture-btn::after {
+        width: 18px; /* Adjust inner circle size */
+        height: 18px;
+    }
+
+    .file-input {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+     .location-group {
+        margin: 0.8rem 0;
+    }
+
+    .location-group label {
+        font-size: 0.75rem;
+    }
+
+    .location-group input[type="text"] {
+        padding: 0.4rem;
+        font-size: 0.85rem;
+    }
+
+
+    .error-message { /* Error message within forms */
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+
+    #mapContainer {
+        height: 200px; /* Further reduce map height */
+        margin-top: 8px;
+    }
+
+    .image-popup {
+        max-width: 50px; /* Back to original size */
+        max-height: 50px;
+    }
+
+    .loading-spinner {
+        width: 30px; /* Even smaller spinner */
+        height: 30px;
+        border-width: 3px;
+    }
+
+    .loading-text {
+        font-size: 0.9rem; /* Adjust loading text size */
+    }
+
+     .error-container { /* Full page error container */
+        padding: 8px; /* Further reduce padding */
+        margin: 8px auto; /* Further reduce margin */
+    }
+
+    .error-message { /* Full page error message */
+        font-size: 0.85rem; /* Further adjust font size */
+        margin-bottom: 8px;
+    }
+
+    .retry-button {
+        padding: 6px 12px; /* Adjust button padding */
+        font-size: 0.85rem;
+    }
 }
 
 @media screen and (width > 1000px) {

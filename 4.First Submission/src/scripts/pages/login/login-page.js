@@ -1,15 +1,18 @@
 
-import { loginUser } from "../../data/auth-api.js";
-import { setAuthData } from "../../utils/auth.js";
 import LoginPresenter from "./login-presenter.js";
 
 export default class LoginPage{
     #presenter; 
-
+    #loadingIndicator = null;
+    #globalLoadingOverlay = null;
     async render(){
         return `
-            <section class="container">
-                <section class="container-flex">
+            <div class="container">
+                <div id="globalLoadingOverlay" class="global-loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Proses Login...</div>
+                </div>
+                <div class="container-flex">
                     <form class="container-flex-form" id="formLogin">
                         <h1>Login Page</h1>
                         <p>Silahkan masukkan email dan password untuk masuk ke dalam web</p>
@@ -39,23 +42,27 @@ export default class LoginPage{
                         <button class="confirm-button">Login</button>
                         <p>Belum punya akun? silahkan <a href="#/register">register disini</a></p>
                     </form>
-                </section>
-            </section>
+                </div>
+            </div>
         `;
     }
     async afterRender() {
+        this.#loadingIndicator = document.querySelector(".loading-indicator");
+        this.#globalLoadingOverlay = document.getElementById("globalLoadingOverlay");
         this.#presenter = new LoginPresenter({ view : this});
         const formLogin = document.getElementById("formLogin");
-
-
+        
+        
+        this.hideLoading();
         formLogin.addEventListener('submit', async(e)=>{
             e.preventDefault();
             
             const email = document.getElementById("email-input").value;
             const password = document.getElementById("password-input").value;
             const userData = {email,password};
-            
+            this.showLoading();
             await this.#presenter.loginUser(userData);
+            
         })
     }
 
@@ -66,6 +73,26 @@ export default class LoginPage{
             errorElement.textContent = message;
         }else{
             console.log("Error dengan id loginError tidak ditemukan");
+        }
+    }
+
+    showLoading() {
+        if (this.#globalLoadingOverlay) {
+          this.#globalLoadingOverlay.style.display = 'flex';
+        }
+        
+        if (this.#loadingIndicator) {
+          this.#loadingIndicator.style.display = 'block';
+        }
+    }
+
+    hideLoading() {
+        if (this.#globalLoadingOverlay) {
+          this.#globalLoadingOverlay.style.display = 'none';
+        }
+        
+        if (this.#loadingIndicator) {
+          this.#loadingIndicator.style.display = 'none';
         }
     }
 

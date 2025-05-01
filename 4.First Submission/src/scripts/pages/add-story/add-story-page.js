@@ -13,7 +13,10 @@ export default class AddStoryPage{
     async render(){
         return `
             <section class="add-story">
-                <h1>Tambah Cerita Baru!</h1>
+                <div class="heading--container">
+                    <h1>Tambah Cerita Baru</h1>
+                    <p>Ambil photo atau upload photo serta masukkan deskripsi ya!</p>
+                </div>
 
                 <form id="storyForm" class="story-form" method="POST" enctype="multipart/form-data">
                     <div class="camera-preview">
@@ -54,11 +57,10 @@ export default class AddStoryPage{
                         </label>
                     </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="submit-btn">Publikasikan</button>
-                    </div>
+                    <button type="submit" class="confirm-button">Publikasikan</button>
+                    
                 </form>
-                <div id="errorMessage" class="error-message"></div>
+                <div id="errorMessage" class="error-message" hidden></div>
                 <div id="successMessage" class="success-message" hidden>Cerita berhasil ditambahkan!</div>
             </section>
 
@@ -121,6 +123,7 @@ export default class AddStoryPage{
     }
     
     showSubmitError(message) {
+        document.getElementById('errorMessage').hidden = false;
         document.getElementById('errorMessage').textContent = message;
     }
     

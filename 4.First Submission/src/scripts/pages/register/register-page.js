@@ -5,10 +5,16 @@ import RegisterPresenter from "./register-presenter";
 
 export default class RegisterPage{
     #presenter;
+    #loadingIndicator = null;
+    #globalLoadingOverlay = null;
     async render(){
         return `
-            <section class="container">
-                <section class="container-flex">
+            <div class="container">
+                <div id="globalLoadingOverlay" class="global-loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Proses Register...</div>
+                </div>
+                <div class="container-flex">
                     <form class="container-flex-form" id="formRegister">
                         <h1>Register Page</h1>
                         <p>Silahkan daftarkan untuk bergabung ke dalam web</p>
@@ -49,14 +55,19 @@ export default class RegisterPage{
                         <button class="confirm-button">Register</button>
                         <p>Sudah punya akun? silahkan <a href="#/login">login disini</a></p>
                     </form>
-                </section>
-            </section>
+                </div>
+            </div>
         `;
     }
 
     async afterRender() {
+        this.#loadingIndicator = document.querySelector(".loading-indicator");
+        this.#globalLoadingOverlay = document.getElementById("globalLoadingOverlay");
+
         this.#presenter = new RegisterPresenter({view : this});
         const registerForm = document.getElementById("formRegister");
+        
+        this.hideLoading();
 
         registerForm.addEventListener("submit",async(e)=>{
             e.preventDefault();
@@ -65,9 +76,32 @@ export default class RegisterPage{
             const email = document.getElementById("email-input").value;
             const password = document.getElementById("password-input").value;
             const userData = {name,email,password};
-
-            this.#presenter.registerUser(userData);
+        
+            this.showLoading();
+        
+            await this.#presenter.registerUser(userData);
         })
+    }
+
+
+    showLoading() {
+        if (this.#globalLoadingOverlay) {
+          this.#globalLoadingOverlay.style.display = 'flex';
+        }
+        
+        if (this.#loadingIndicator) {
+          this.#loadingIndicator.style.display = 'block';
+        }
+    }
+
+    hideLoading() {
+        if (this.#globalLoadingOverlay) {
+          this.#globalLoadingOverlay.style.display = 'none';
+        }
+        
+        if (this.#loadingIndicator) {
+          this.#loadingIndicator.style.display = 'none';
+        }
     }
 
     showRegisterError(message){
