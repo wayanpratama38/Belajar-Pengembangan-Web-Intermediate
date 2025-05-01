@@ -100,6 +100,83 @@ header {
 
 /* Write your styles more here */
 
+.container-flex  {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.container-flex-form{
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.container-flex-form h1 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.container-flex-form p{
+  text-align: center;
+  font-size: small;
+  margin-bottom: 1rem;
+}
+
+.container-flex-form a{
+  text-decoration: none;
+  color: blue;
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label{
+  color: grey;
+  font-weight: bold;
+  font-size: small;
+}
+
+.form-group input{
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+}
+
+.form-group input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+}
+
+.confirm-button{
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 0;
+  color: white;
+  background-color: green;
+  margin-bottom: 10px;
+}
+
+.confirm-button:hover{
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  cursor: pointer;
+}
+
+.confirm-button:active{
+  transform: translateY(0px);
+}
+
 @media screen and (width > 1000px) {
   .navigation-drawer {
     min-height: auto;
