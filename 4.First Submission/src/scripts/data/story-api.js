@@ -26,6 +26,18 @@ const StoryModel = {
       body : formData
     })
     return response.json();
+  },
+
+  async getAllStoriesLocation(){
+    const locationEnable = 1;
+    const size = 20;
+    const response = await fetch(`${ENDPOINTS.STORIES}?location=${locationEnable}&size=${size}`,{
+      headers:{
+        "Authorization" : `Bearer ${getAuthToken()}`
+      },
+      cache : "reload"
+    })
+    return response.json();
   }
 }
 
