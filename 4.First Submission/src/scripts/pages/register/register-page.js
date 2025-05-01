@@ -1,8 +1,10 @@
 import { registerUser } from "../../data/auth-api";
+import RegisterPresenter from "./register-presenter";
 
 
 
 export default class RegisterPage{
+    #presenter;
     async render(){
         return `
             <section class="container">
@@ -43,6 +45,7 @@ export default class RegisterPage{
                                 required
                             />
                         </div>
+                        <p class="error-message" id="registerError"></p>
                         <button class="confirm-button">Register</button>
                         <p>Sudah punya akun? silahkan <a href="#/login">login disini</a></p>
                     </form>
@@ -52,6 +55,7 @@ export default class RegisterPage{
     }
 
     async afterRender() {
+        this.#presenter = new RegisterPresenter({view : this});
         const registerForm = document.getElementById("formRegister");
 
         registerForm.addEventListener("submit",async(e)=>{
@@ -60,20 +64,22 @@ export default class RegisterPage{
             const name = document.getElementById("name-input").value;
             const email = document.getElementById("email-input").value;
             const password = document.getElementById("password-input").value;
+            const userData = {name,email,password};
 
-            try{
-                const response = await registerUser({
-                    name,email,password
-                });
-
-                if(response.error){
-                    console.log(response.message);
-                }else{
-                    window.location.hash = "#/login";
-                }
-            } catch(error){
-                console.log("Registration error :",error)
-            }
+            this.#presenter.registerUser(userData);
         })
-      }
+    }
+
+    showRegisterError(message){
+        const errorMessage = document.getElementById("#errorRegister");
+        if(errorMessage){
+            errorMessage.textContent = message;
+        } else {
+            console.log("errorMessage ID tidak ditemukan!");
+        }
+    }
+
+    navigateToLogin(){
+        window.location.hash = "#/login";
+    }
 }

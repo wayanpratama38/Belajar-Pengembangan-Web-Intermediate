@@ -1,8 +1,11 @@
 
 import { loginUser } from "../../data/auth-api.js";
 import { setAuthData } from "../../utils/auth.js";
+import LoginPresenter from "./login-presenter.js";
 
 export default class LoginPage{
+    #presenter; 
+
     async render(){
         return `
             <section class="container">
@@ -32,6 +35,7 @@ export default class LoginPage{
                                 required
                             />
                         </div>
+                        <p class="error-message" id="loginError"></p>
                         <button class="confirm-button">Login</button>
                         <p>Belum punya akun? silahkan <a href="#/register">register disini</a></p>
                     </form>
@@ -40,38 +44,32 @@ export default class LoginPage{
         `;
     }
     async afterRender() {
+        this.#presenter = new LoginPresenter({ view : this});
         const formLogin = document.getElementById("formLogin");
+
 
         formLogin.addEventListener('submit', async(e)=>{
             e.preventDefault();
             
             const email = document.getElementById("email-input").value;
             const password = document.getElementById("password-input").value;
-            try{
-                const response = await loginUser({
-                    email,password
-                })
-    
-                if(response.error){
-                    console.log(response.message);
-                }else{
-                    const loginResult = response.loginResult;
-                    console.log("User ID :",loginResult.userId);
-                    console.log("User Name :",loginResult.name);
-                    console.log("User Token :",loginResult.token);
-
-                    setAuthData({
-                        token:loginResult.token
-                    })
-
-                    window.location.hash = "#/homepage"
-                }
-            }catch(error){
-                console.log(error)
-            }
+            const userData = {email,password};
+            
+            await this.#presenter.loginUser(userData);
         })
-        
+    }
 
-      }
+    showLoginError(message){
+        const errorElement = document.getElementById("#loginError");
+        if(errorElement){
+            errorElement.textContent = message;
+        }else{
+            console.log("Error dengan id loginError tidak ditemukan");
+        }
+    }
+
+    navigateToHomepage(){
+        window.location.hash = "#/homepage";
+    }
 
 }
