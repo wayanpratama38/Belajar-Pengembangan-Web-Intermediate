@@ -5,7 +5,6 @@ export default class HomePresenter {
   #model;
   #view;
   #storiesData;
-  #dataLoaded = false;
   
   constructor({ view }) {
     this.#model = StoryModel;
@@ -14,16 +13,10 @@ export default class HomePresenter {
 
   async init() {
     try {
-      // Show loading state
       this.#view.showLoading();
       
-      // Fetch stories data
       await this.getAllStories();
-      
-      // Mark data as loaded
-      this.#dataLoaded = true;
-      
-      // Display stories and hide loading
+
       this.#view.showStories(this.#storiesData);
       this.#view.hideLoading();
       
@@ -44,21 +37,5 @@ export default class HomePresenter {
       return [];
     }
   }
-  
-  // Refresh data and update stories
-  async refreshData() {
-    try {
-      this.#view.showLoading();
-      this.#dataLoaded = false;
-      
-      await this.getAllStories();
-      this.#dataLoaded = true;
-      
-      this.#view.showStories(this.#storiesData);
-      this.#view.hideLoading();
-    } catch (error) {
-      console.error("Error refreshing data:", error);
-      this.#view.showError("Gagal memperbarui data!");
-    }
-  }
+
 }
