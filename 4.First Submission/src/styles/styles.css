@@ -236,10 +236,11 @@ header {
   color: #636e72;
   line-height: 1.6;
   margin: 0 0 1rem 0;
-  display: -webkit-box;
-  line-clamp: 3;
+  display: -webkit-box; 
+  -webkit-line-clamp: 3; 
+  line-clamp:  3;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  overflow:hidden;
 }
 
 .story-date {

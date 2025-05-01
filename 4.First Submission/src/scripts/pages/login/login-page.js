@@ -35,7 +35,7 @@ export default class LoginPage{
                                 required
                             />
                         </div>
-                        <p class="error-message" id="loginError"></p>
+                        <p class="error-message" id="loginError" hidden></p>
                         <button class="confirm-button">Login</button>
                         <p>Belum punya akun? silahkan <a href="#/register">register disini</a></p>
                     </form>
@@ -60,8 +60,9 @@ export default class LoginPage{
     }
 
     showLoginError(message){
-        const errorElement = document.getElementById("#loginError");
+        const errorElement = document.getElementById("loginError");
         if(errorElement){
+            errorElement.hidden = false;
             errorElement.textContent = message;
         }else{
             console.log("Error dengan id loginError tidak ditemukan");

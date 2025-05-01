@@ -45,7 +45,7 @@ export default class RegisterPage{
                                 required
                             />
                         </div>
-                        <p class="error-message" id="registerError"></p>
+                        <p class="error-message" id="registerError" hidden></p>
                         <button class="confirm-button">Register</button>
                         <p>Sudah punya akun? silahkan <a href="#/login">login disini</a></p>
                     </form>
@@ -71,8 +71,9 @@ export default class RegisterPage{
     }
 
     showRegisterError(message){
-        const errorMessage = document.getElementById("#errorRegister");
+        const errorMessage = document.getElementById("errorRegister");
         if(errorMessage){
+            errorMessage.hidden = false;
             errorMessage.textContent = message;
         } else {
             console.log("errorMessage ID tidak ditemukan!");
