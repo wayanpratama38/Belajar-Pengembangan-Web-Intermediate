@@ -74,7 +74,6 @@ export default class MapPage {
       "Carto DB Dark Matter" : cartoDbDarkMatter  
     };
 
-    console.log(baseLayers);
     
     this.#storiesLayer = L.featureGroup();
 
@@ -91,11 +90,9 @@ export default class MapPage {
 
     this.#map.invalidateSize();
 
-    console.log("View: Map initialized with layers and controls.");
   }
 
   renderMapMarkers(locations) {
-    console.log(`View: Rendering ${locations.length} map markers.`);
     if (!this.#map || !this.#storiesLayer) {
       console.error("View: Map or stories layer not initialized when trying to render markers.");
       return;
@@ -113,7 +110,7 @@ export default class MapPage {
               popupContent += `<br>${shortDescription}`;
             }
           if (location.photoUrl) {
-              popupContent += `<br><img src="${location.photoUrl}" style="max-width: 50px; max-height: 50px; margin-top: 5px;">`;
+              popupContent += `<br><img src="${location.photoUrl}" class="image-popup">`;
           }
           
           if (location.createdAt) {
@@ -148,7 +145,6 @@ export default class MapPage {
   }
 
   showLoading() {
-    console.log("View: Showing loading indicator.");
     if (this.#loadingOverlay) {
         this.#loadingOverlay.style.display = 'flex'; 
     }
@@ -156,7 +152,6 @@ export default class MapPage {
   }
 
   hideLoading() {
-    console.log("View: Hiding loading indicator.");
     if (this.#loadingOverlay) {
       this.#loadingOverlay.style.display = 'none';
     }

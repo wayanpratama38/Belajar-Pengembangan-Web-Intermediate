@@ -93,7 +93,6 @@ export default class AddStoryPresenter{
     async submitStory(formData){
         const description = formData.get('description');
         const photoFile = formData.get("photo");
-        console.log("SUBMIT STORY : ",photoFile);
 
         if (!description || !photoFile) {
             this.#view.showSubmitError('Deskripsi dan foto harus diisi!');

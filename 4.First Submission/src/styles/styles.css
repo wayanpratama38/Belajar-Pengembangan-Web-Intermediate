@@ -343,6 +343,12 @@ header {
   
 }
 
+.image-popup{
+  max-width: 50px; 
+  max-height: 50px; 
+  margin-top: 5px;
+}
+
 .global-loading-overlay {
   position: fixed;
   top: 0;

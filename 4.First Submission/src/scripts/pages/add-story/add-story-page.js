@@ -155,7 +155,7 @@ export default class AddStoryPage{
         const form = event.target;
         const formData = new FormData(form);
         let imageFile = formData.get('photo');
-        
+                
         if (this.#capturedCameraDataURL) {
             const blob = await fetch(this.#capturedCameraDataURL).then(r => r.blob());
             const timestamp = new Date().getTime();
