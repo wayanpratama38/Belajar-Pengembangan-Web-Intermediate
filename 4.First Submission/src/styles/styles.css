@@ -333,6 +333,11 @@ header {
   background: #fdedec;
 }
 
+/* MAP */
+#mapContainer{
+  height: 300px; 
+  margin-top: 20px;
+}
 
 @media screen and (width > 1000px) {
   .navigation-drawer {
