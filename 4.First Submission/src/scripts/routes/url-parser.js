@@ -1,3 +1,6 @@
+import routes from "./routes";
+import { isLoggedIn } from "../utils/auth";
+
 function extractPathnameSegments(path) {
   const splitUrl = path.split('/');
 
@@ -43,4 +46,21 @@ export function getRoute(pathname) {
 
 export function parsePathname(pathname) {
   return extractPathnameSegments(pathname);
+}
+
+export function resolveRoute() {
+  const path = getActivePathname();
+  const routePattern = getActiveRoute();
+  const route = routes[routePattern];
+
+  // Auth check logic
+  if (route?.authRequired && !isLoggedIn()) {
+    return { redirect: '#/login' };
+  }
+  
+  if (route?.redirectIfAuth && isLoggedIn()) {
+    return { redirect: '#/' };
+  }
+
+  return route || routes["/"];
 }

@@ -1,5 +1,5 @@
-import routes from '../routes/routes';
-import { getActiveRoute } from '../routes/url-parser';
+import { resolveRoute } from '../routes/url-parser';
+import { isLoggedIn } from '../utils/auth';
 
 class App {
   #content = null;
@@ -32,12 +32,38 @@ class App {
     });
   }
 
-  async renderPage() {
-    const url = getActiveRoute();
-    const page = routes[url];
+  _updateNavigation(){
+    const authLinks = isLoggedIn() ? `
+      <li><a href="#/dashboard">Dashboard</a></li>
+      <li><a href="#/about">About</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    ` : `
+      <li><a href="#/login">Login</a></li>
+      <li><a href="#/register">Register</a></li>
+    `;
+    const navList = this.#navigationDrawer.querySelector('.nav-list');
+    navList.innerHTML = authLinks;
 
-    this.#content.innerHTML = await page.render();
-    await page.afterRender();
+    const logoutBtn = this.#navigationDrawer.querySelector('#logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        clearAuthData();
+        window.location.hash = '#/login';
+      });
+    }
+  }
+
+  async renderPage() {
+    const routeInfo = resolveRoute();
+
+    const { component } = routeInfo;
+
+    this._updateNavigation();
+
+    this.#content.innerHTML = await component.render();
+    await component.afterRender();
+
+    document.title = routeInfo.title
   }
 }
 
