@@ -1,11 +1,24 @@
+import { registerUser } from "../../data/api";
+
 export default class RegisterPage{
     async render(){
         return `
             <section class="container">
                 <section class="container-flex">
-                    <form action="post" class="container-flex-form">
+                    <form class="container-flex-form" id="formRegister">
                         <h1>Register Page</h1>
-                        <p>Silahkan daftarkan email dan password untuk bergabung ke dalam web</p>
+                        <p>Silahkan daftarkan untuk bergabung ke dalam web</p>
+                        <div class="form-group">
+                            <label for="name-input">Nama</label>
+                                <input
+                                    type="name"
+                                    id="name-input"
+                                    name="name"
+                                    autocomplete="name"
+                                    placeholder="Dicoding Indonesia"
+                                    required
+                            />
+                        </div>
                         <div class="form-group">
                             <label for="email-input">Email</label>
                             <input
@@ -37,6 +50,28 @@ export default class RegisterPage{
     }
 
     async afterRender() {
-        // Do your job here
+        const registerForm = document.getElementById("formRegister");
+
+        registerForm.addEventListener("submit",async(e)=>{
+            e.preventDefault();
+
+            const name = document.getElementById("name-input").value;
+            const email = document.getElementById("email-input").value;
+            const password = document.getElementById("password-input").value;
+
+            try{
+                const response = await registerUser({
+                    name,email,password
+                });
+
+                if(response.error){
+                    console.log(response.message);
+                }else{
+                    window.location.hash = "#/login";
+                }
+            } catch(error){
+                console.log("Registration error :",error)
+            }
+        })
       }
 }
