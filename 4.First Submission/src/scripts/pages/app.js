@@ -22,7 +22,6 @@ class App {
 
     this._setupDrawer();
     this.renderPage();
-
   }
 
   _setupDrawer() {
@@ -92,30 +91,27 @@ class App {
     }
 
     if (this.#currentPage && typeof this.#currentPage.destroy === 'function') {
-      
       try {
-         this.#currentPage.destroy(); 
+        this.#currentPage.destroy();
       } catch (error) {
-         console.error("Erro dalam destroy sebelumnya:", error);
+        console.error('Erro dalam destroy sebelumnya:', error);
       }
     }
 
     this.#currentPage = null;
 
     if (routeInfo.component) {
-      
-      this.#currentPage = routeInfo.component; 
-    
+      this.#currentPage = routeInfo.component;
+
       this.#content.innerHTML = await this.#currentPage.render();
       await this.#currentPage.afterRender();
       document.title = routeInfo.title || 'App';
     } else {
       this.#content.innerHTML = '<p>Page not found</p>';
       document.title = 'Not Found';
-      this.#currentPage = null; 
+      this.#currentPage = null;
     }
   }
-    
 }
 
 export default App;

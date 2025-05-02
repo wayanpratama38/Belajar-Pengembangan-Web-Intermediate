@@ -3,7 +3,6 @@ import { isLoggedIn } from '../utils/auth';
 
 let activeComponent = null;
 
-
 function extractPathnameSegments(path) {
   const splitUrl = path.split('/');
 

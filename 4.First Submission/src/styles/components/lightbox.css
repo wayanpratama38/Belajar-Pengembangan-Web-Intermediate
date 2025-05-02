@@ -19,7 +19,6 @@
   background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
   view-transition-name: lightbox;
-
 }
 
 .lightbox-container {
@@ -36,8 +35,6 @@
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
   transform-origin: center center;
   view-transition-name: lightbox-container;
-
-
 }
 
 .lightbox-close-btn {
@@ -133,25 +130,25 @@
   }
 }
 
-@keyframes cameIn{
-  0%{
+@keyframes cameIn {
+  0% {
     opacity: 0;
   }
 
-  100%{
+  100% {
     opacity: 1;
   }
 }
 
-::view-transition-new(lightbox){
+::view-transition-new(lightbox) {
   animation: 100ms ease-in both cameIn;
 }
 ::view-transition-new(lightbox-container) {
   animation: 300ms ease-in both scaleCenterIn;
 }
 
-::view-transition-old(lightbox){
-  animation : 100ms ease-out  both reverse cameIn;
+::view-transition-old(lightbox) {
+  animation: 100ms ease-out both reverse cameIn;
 }
 ::view-transition-old(lightbox-container) {
   animation: 300ms ease-out both reverse scaleCenterIn;

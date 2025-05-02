@@ -104,10 +104,7 @@ export default class AddStoryPage {
     this.#presenter.destroy();
   }
 
-
-  #setupNavigationInterception() {
-    
-  }
+  #setupNavigationInterception() {}
 
   captureCameraFrame() {
     const context = this.#photoCanvasElement.getContext('2d');
