@@ -12,17 +12,17 @@ export default class AddStoryPage{
 
     async render(){
         return `
-            <section class="add-story">
-                <div class="heading--container">
-                    <h1>Tambah Cerita Baru</h1>
-                    <p>Ambil photo atau upload photo serta masukkan deskripsi ya!</p>
+            <section class="add-story view-transition-content">
+                <div class="heading--container" aria-label="Heading Container">
+                    <h1 aria-label="Add Story Page">Tambah Cerita Baru</h1>
+                    <p aria-label="Deskripsi Add Story Page">Ambil photo atau upload photo serta masukkan deskripsi ya!</p>
                 </div>
 
                 <form id="storyForm" class="story-form" method="POST" enctype="multipart/form-data">
                     <div class="camera-preview">
                         <video id="cameraView" class="camera-view" muted playsinline></video>
                         <canvas id="photoCanvas" class="photo-canvas" hidden></canvas>
-                        <button type="button" id="captureBtn" class="capture-btn">
+                        <button type="button" id="captureBtn" aria-label="Ambil foto" class="capture-btn">
                         <i class="fas fa-camera"></i>
                         </button>
                     </div>
@@ -60,8 +60,8 @@ export default class AddStoryPage{
                     <button type="submit" class="confirm-button">Publikasikan</button>
                     
                 </form>
-                <div id="errorMessage" class="error-message" hidden></div>
-                <div id="successMessage" class="success-message" hidden>Cerita berhasil ditambahkan!</div>
+                <div id="errorMessage" class="error-message" hidden aria-live="polite"></div>
+                <div id="successMessage" class="success-message" hidden aria-live="polite">Cerita berhasil ditambahkan!</div>
             </section>
 
         `

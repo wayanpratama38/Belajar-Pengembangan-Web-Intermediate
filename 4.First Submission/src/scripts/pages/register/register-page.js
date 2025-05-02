@@ -1,4 +1,3 @@
-import { registerUser } from "../../data/auth-api";
 import RegisterPresenter from "./register-presenter";
 
 
@@ -68,19 +67,20 @@ export default class RegisterPage{
         const registerForm = document.getElementById("formRegister");
         
         this.hideLoading();
-
-        registerForm.addEventListener("submit",async(e)=>{
-            e.preventDefault();
-
-            const name = document.getElementById("name-input").value;
-            const email = document.getElementById("email-input").value;
-            const password = document.getElementById("password-input").value;
-            const userData = {name,email,password};
-        
-            this.showLoading();
-        
-            await this.#presenter.registerUser(userData);
-        })
+        if(registerForm){
+            registerForm.addEventListener("submit",async(e)=>{
+                e.preventDefault();
+    
+                const name = document.getElementById("name-input").value;
+                const email = document.getElementById("email-input").value;
+                const password = document.getElementById("password-input").value;
+                const userData = {name,email,password};
+            
+                this.showLoading();
+            
+                await this.#presenter.registerUser(userData);
+            });
+        }
     }
 
 

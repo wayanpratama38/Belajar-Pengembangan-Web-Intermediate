@@ -15,22 +15,23 @@ export default class StoryCard {
     }
   
     render() {
-      const { name, description, photoUrl, createdAt } = this.story;
+      const { id, name, description, photoUrl, createdAt } = this.story;
       
       return `
-        <article class="story-card">
-          <div class="story-image-container">
+        <article class="story-card" data-story-id="${id}" aria-label="Sebuah container kartu">
+          <div class="story-image-container" aria-label="Gambar story si ${name}">
             <img 
               src="${photoUrl}" 
-              alt="${name}'s story" 
+              alt="story ${name} " 
               class="story-image"
               loading="lazy"
+              style="view-transition-name: story-image-${id}"
             >
           </div>
-          <div class="story-content">
-            <h3 class="story-title">${name}</h3>
-            <p class="story-description">${description}</p>
-            <time datetime="${createdAt}" class="story-date">
+          <div class="story-content" aria-label="Informasi tambahan story si ${name}">
+            <h3 class="story-title" style="view-transition-name: story-title-${id}" aria-label="Nama pembuat story">${name}</h3>
+            <p class="story-description" aria-label="Deskripsi story" >${description}</p>
+            <time datetime="${createdAt}" class="story-date" aria-label="Tanggal dibuat story">
               ${this.#formatDate(createdAt)}
             </time>
           </div>

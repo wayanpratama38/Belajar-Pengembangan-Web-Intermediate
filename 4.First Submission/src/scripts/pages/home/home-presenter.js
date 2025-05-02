@@ -5,6 +5,8 @@ export default class HomePresenter {
   #model;
   #view;
   #storiesData;
+  #storiesArray = [];
+
   
   constructor({ view }) {
     this.#model = StoryModel;
@@ -17,7 +19,9 @@ export default class HomePresenter {
       
       await this.getAllStories();
 
+      this.#prepareStoriesArray();
       this.#view.showStories(this.#storiesData);
+      this.#view.attachStoryCardListeners(this.#storiesArray);
       this.#view.hideLoading();
       
     } catch (error) {
@@ -35,6 +39,38 @@ export default class HomePresenter {
       this.#view.showError("Gagal memuat cerita!");
       console.error("Error fetching stories:", error);
       return [];
+    }
+  }
+
+  #prepareStoriesArray() {
+    if (Array.isArray(this.#storiesData)) {
+      this.#storiesArray = this.#storiesData;
+    } 
+    
+    else if (this.#storiesData && typeof this.#storiesData === 'object') {
+      
+      if (this.#storiesData.listStory && Array.isArray(this.#storiesData.listStory)) {
+        this.#storiesArray = this.#storiesData.listStory;
+      } 
+     
+      else if (Object.values(this.#storiesData).some(Array.isArray)) {
+        
+        for (const key in this.#storiesData) {
+          if (Array.isArray(this.#storiesData[key])) {
+            this.#storiesArray = this.#storiesData[key];
+            break;
+          }
+        }
+      }
+     
+      else {
+        this.#storiesArray = Object.values(this.#storiesData).filter(item => item && typeof item === 'object');
+      }
+    } 
+  
+    else {
+      this.#storiesArray = [];
+      console.warn("Data stories bukan array atau object:", this.#storiesData);
     }
   }
 

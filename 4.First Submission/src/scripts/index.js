@@ -1,7 +1,6 @@
 // CSS imports
-import '../styles/styles.css';
-
-import App from './pages/app';
+import '../styles/main.css';
+import App from './pages/app'; // Pastikan path ini benar
 
 document.addEventListener('DOMContentLoaded', async () => {
   const app = new App({
@@ -15,3 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await app.renderPage();
   });
 });
+
+
+
+

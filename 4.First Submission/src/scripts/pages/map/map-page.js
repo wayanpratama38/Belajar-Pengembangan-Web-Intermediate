@@ -14,14 +14,14 @@ export default class MapPage {
 
   async render() {
     return `
-      <section class="container">
+      <section class="container view-transition-content">
         <div id="globalLoadingOverlay" class="global-loading-overlay">
           <div class="loading-spinner"></div>
           <div class="loading-text">Memuat konten...</div>
         </div>
-        <div class="heading--container">
-          <h1>Map Page</h1>
-          <p>Disini kamu terlihat di peta!</p>
+        <div class="heading--container" aria-label="Heading Container">
+          <h1 aria-label="Map page">Map Page</h1>
+          <p aria-label="Deskripsi map page">Disini kamu terlihat di peta!</p>
         </div>
         <div id="mapContainer">
         </div>
@@ -94,7 +94,7 @@ export default class MapPage {
 
   renderMapMarkers(locations) {
     if (!this.#map || !this.#storiesLayer) {
-      console.error("View: Map or stories layer not initialized when trying to render markers.");
+      console.error("Belum terinisialisasi");
       return;
     }
 
@@ -110,7 +110,7 @@ export default class MapPage {
               popupContent += `<br>${shortDescription}`;
             }
           if (location.photoUrl) {
-              popupContent += `<br><img src="${location.photoUrl}" class="image-popup">`;
+              popupContent += `<br><img src="${location.photoUrl}" alt="Gambar story ${location.nama}" class="image-popup">`;
           }
           
           if (location.createdAt) {
@@ -120,7 +120,7 @@ export default class MapPage {
           marker.bindPopup(popupContent);
           marker.addTo(this.#storiesLayer);
         } else {
-          console.warn("View: Skipping marker due to invalid location data:", location);
+          console.warn("skip, karena tidak valid", location);
         }
     });
 
@@ -135,12 +135,11 @@ export default class MapPage {
           this.#map.setView([-3.0, 118.0], 5);
         }
       } catch (error) {
-        console.error("View: Error fitting bounds:", error);
+        console.error("Error waktu bound : ", error);
         this.#map.setView([-3.0, 118.0], 5);
       }
     } else {
       this.#map.setView([-3.0, 118.0], 5);
-      console.warn("View: No stories with valid location to display markers.");
     }
   }
 
@@ -158,7 +157,7 @@ export default class MapPage {
   }
 
   showError(message) {
-      console.error("View: Showing error:", message);
+      console.error("Pesan error", message);
       if (this.#errorMessageElement) {
           this.#errorMessageElement.textContent = message;
           this.#errorMessageElement.style.display = 'block';

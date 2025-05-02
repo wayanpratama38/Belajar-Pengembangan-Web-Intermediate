@@ -1,0 +1,15 @@
+/* Map Page Styles */
+#mapContainer {
+    height: 400px;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    z-index: 1;
+    margin-top: 20px;
+}
+  
+.image-popup {
+    max-width: 50px;
+    max-height: 50px;
+    margin-top: 5px;
+}

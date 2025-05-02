@@ -56,11 +56,7 @@ export function resolveRoute() {
   const path = getActivePathname();
   const routePattern = getActiveRoute();
   const route = routes[routePattern]
-
-  if (path === "/"){
-    return {redirect : "#/hompage"};
-  }
-
+  
   if (route?.authRequired && !isLoggedIn()) {
     return { redirect: '#/login' };
   }
