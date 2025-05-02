@@ -25,9 +25,6 @@ export default class LightboxManager {
     document.body.appendChild(this.lightbox);
     document.body.style.overflow = 'hidden';
 
-    this.lightboxContainer.classList.remove('is-closing');
-    this.lightboxContainer.classList.add('is-opening');
-
     this.isOpen = true;
   }
 
@@ -52,36 +49,17 @@ export default class LightboxManager {
   closeLightbox() {
     if (!this.isOpen || !this.lightbox || !this.lightboxContainer) return;
 
-    this.lightboxContainer.classList.remove('is-opening');
-    this.lightboxContainer.classList.add('is-closing');
-
-    const animationDuration = 300;
-    setTimeout(() => {
+    if (document.startViewTransition) {
+      return this.closeLightboxWithViewTransition();
+    } else {
       this.removeFromDOM();
-    }, animationDuration);
+    }
   }
 
   closeLightboxWithViewTransition() {
-    if (
-      !this.isOpen ||
-      !this.lightbox ||
-      !this.lightboxContainer ||
-      !document.startViewTransition
-    ) {
-      this.closeLightbox();
-      return;
-    }
-
-    const transition = document.startViewTransition(() => {
-      this.lightboxContainer.classList.remove('is-opening');
-      this.lightboxContainer.classList.add('is-closing');
-
-      setTimeout(() => {
-        this.removeFromDOM();
-      }, 300);
-    });
-
-    return transition.finished;
+    return document.startViewTransition(() => {
+      this.removeFromDOM();
+    }).finished;
   }
 
   removeFromDOM() {
@@ -97,21 +75,21 @@ export default class LightboxManager {
     this.lightbox.className = 'lightbox';
 
     this.lightbox.innerHTML = `
-        <div class="lightbox-overlay"></div>
-        <div class="lightbox-container">
-          <button class="lightbox-close-btn">&times;</button>
-          <div class="lightbox-content">
-            <div class="lightbox-image-container">
-              <img class="lightbox-image" src="" alt="Story image">
-            </div>
-            <div class="lightbox-info">
-              <h2 class="lightbox-title"></h2>
-              <p class="lightbox-description"></p>
-              <span class="lightbox-date"></span>
-            </div>
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-container">
+        <button class="lightbox-close-btn">&times;</button>
+        <div class="lightbox-content">
+          <div class="lightbox-image-container">
+            <img class="lightbox-image" src="" alt="Story image">
+          </div>
+          <div class="lightbox-info">
+            <h2 class="lightbox-title"></h2>
+            <p class="lightbox-description"></p>
+            <span class="lightbox-date"></span>
           </div>
         </div>
-      `;
+      </div>
+    `;
 
     this.lightboxContainer = this.lightbox.querySelector('.lightbox-container');
     this.lightboxImage = this.lightbox.querySelector('.lightbox-image');
@@ -120,26 +98,12 @@ export default class LightboxManager {
     const overlay = this.lightbox.querySelector('.lightbox-overlay');
     const closeBtn = this.lightbox.querySelector('.lightbox-close-btn');
 
-    if (overlay) {
-      overlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (document.startViewTransition) {
-          this.closeLightboxWithViewTransition();
-        } else {
-          this.closeLightbox();
-        }
-      });
-    }
+    const closeHandler = (e) => {
+      e.stopPropagation();
+      this.closeLightbox();
+    };
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (document.startViewTransition) {
-          this.closeLightboxWithViewTransition();
-        } else {
-          this.closeLightbox();
-        }
-      });
-    }
+    if (overlay) overlay.addEventListener('click', closeHandler);
+    if (closeBtn) closeBtn.addEventListener('click', closeHandler);
   }
 }

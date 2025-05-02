@@ -4,11 +4,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  view-transition-name: lightbox;
 }
 
 .lightbox-overlay {
@@ -19,6 +18,8 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
+  view-transition-name: lightbox;
+
 }
 
 .lightbox-container {
@@ -34,6 +35,9 @@
   z-index: 10000;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
   transform-origin: center center;
+  view-transition-name: lightbox-container;
+
+
 }
 
 .lightbox-close-btn {
@@ -119,78 +123,36 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.lightbox-container.is-opening {
-  animation: scaleCenterIn 0.3s ease-out forwards;
-}
-
-.lightbox-container.is-closing {
-  animation: scaleCenterOut 0.3s ease-in reverse;
-}
-
 @keyframes scaleCenterIn {
   0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes scaleCenterOut {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
     transform: scale(0);
-    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
-/* View Transitions API animations */
-@keyframes fade-in {
-  from {
+@keyframes cameIn{
+  0%{
     opacity: 0;
   }
-  to {
+
+  100%{
     opacity: 1;
   }
 }
 
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+::view-transition-new(lightbox){
+  animation: 100ms ease-in both cameIn;
+}
+::view-transition-new(lightbox-container) {
+  animation: 300ms ease-in both scaleCenterIn;
 }
 
-@keyframes slide-up {
-  from {
-    transform: translateY(5rem);
-  }
-  to {
-    transform: translateY(0);
-  }
+::view-transition-old(lightbox){
+  animation : 100ms ease-out  both reverse cameIn;
 }
-
-@keyframes slide-down {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(5rem);
-  }
-}
-
-/* View Transition animation rules */
-::view-transition-new(lightbox) {
-  animation: 300ms ease 50ms both scaleCenterIn;
-}
-
-::view-transition-old(lightbox) {
-  animation: 300ms ease 50ms both slide-down;
+::view-transition-old(lightbox-container) {
+  animation: 300ms ease-out both reverse scaleCenterIn;
 }

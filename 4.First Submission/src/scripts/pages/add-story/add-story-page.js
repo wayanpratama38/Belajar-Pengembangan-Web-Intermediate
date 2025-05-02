@@ -100,6 +100,15 @@ export default class AddStoryPage {
     });
   }
 
+  #handleUnload() {
+    this.#presenter.destroy();
+  }
+
+
+  #setupNavigationInterception() {
+    
+  }
+
   captureCameraFrame() {
     const context = this.#photoCanvasElement.getContext('2d');
     const maxWidth = 640;
@@ -185,6 +194,9 @@ export default class AddStoryPage {
   }
 
   destroy() {
-    this.#presenter.destroy();
+    if (this.#presenter) {
+      this.#presenter.destroy();
+      console.log('AddStoryPage: Cleaning up camera resources');
+    }
   }
 }

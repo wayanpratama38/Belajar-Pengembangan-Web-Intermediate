@@ -33,6 +33,7 @@ export default class AddStoryPresenter {
     } catch (error) {
       console.log('Error Accessing camera ; ', error);
       this.#view.showCameraError('Akses kamera ditolak!');
+      this.#stopMediaStream();
     }
   }
 
@@ -49,7 +50,9 @@ export default class AddStoryPresenter {
       });
       this.#mediaStream = null;
       const video = document.getElementById('cameraView');
-      video.srcObject = null;
+      if (video) {
+        video.srcObject = null;
+      }
     }
   }
 
@@ -111,6 +114,7 @@ export default class AddStoryPresenter {
         this.#view.showSubmitError('Gagal mengunggah cerita.');
       } else {
         this.#view.showStoryAddedMessage();
+        this.#stopMediaStream();
         this.#view.navigateToHomepage();
       }
     } catch (error) {

@@ -43,3 +43,7 @@
 .location-group {
   margin: 1rem 0;
 }
+
+.form-group>label{
+  color: #000;
+}

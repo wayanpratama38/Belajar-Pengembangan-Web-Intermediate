@@ -124,7 +124,7 @@ export default class MapPage {
           popupContent += `<br>${shortDescription}`;
         }
         if (location.photoUrl) {
-          popupContent += `<br><img src="${location.photoUrl}" alt="Gambar story ${location.nama}" class="image-popup">`;
+          popupContent += `<br><img src="${location.photoUrl}" alt="Gambar story ${location.nama}" aria-label="Lokasi cerita: Nama lokasi" class="image-popup">`;
         }
 
         if (location.createdAt) {

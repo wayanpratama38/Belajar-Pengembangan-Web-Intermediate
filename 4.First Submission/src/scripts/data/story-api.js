@@ -30,7 +30,7 @@ const StoryModel = {
 
   async getAllStoriesLocation() {
     const locationEnable = 1;
-    const size = 20;
+    const size = 5;
     const response = await fetch(
       `${ENDPOINTS.STORIES}?location=${locationEnable}&size=${size}`,
       {
