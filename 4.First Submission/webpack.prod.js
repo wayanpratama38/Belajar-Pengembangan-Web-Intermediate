@@ -9,10 +9,7 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.js$/,
@@ -28,8 +25,5 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin(),
-  ],
+  plugins: [new CleanWebpackPlugin(), new MiniCssExtractPlugin()],
 });

@@ -1,6 +1,6 @@
-import StoryCard from "../../components/story-card";
-import HomePresenter from "./home-presenter";
-import LightboxManager from "../../components/lightbox-manager";
+import StoryCard from '../../components/story-card';
+import HomePresenter from './home-presenter';
+import LightboxManager from '../../components/lightbox-manager';
 
 export default class HomePage {
   #presenter;
@@ -28,36 +28,35 @@ export default class HomePage {
   }
 
   async afterRender() {
-    this.#storiesContainer = document.querySelector(".stories-container");
-    this.#loadingIndicator = document.querySelector(".loading-indicator");
-    this.#globalLoadingOverlay = document.getElementById("globalLoadingOverlay");
-    
+    this.#storiesContainer = document.querySelector('.stories-container');
+    this.#loadingIndicator = document.querySelector('.loading-indicator');
+    this.#globalLoadingOverlay = document.getElementById(
+      'globalLoadingOverlay'
+    );
 
     if (!this.#storiesContainer) {
-      console.error("DOM stories-container belum ada!");
+      console.error('DOM stories-container belum ada!');
       return;
     }
 
     this.hideLoading();
     this.#lightboxManager = new LightboxManager();
     this.#presenter = new HomePresenter({ view: this });
-    try{
+    try {
       this.showLoading();
       await this.#presenter.init();
     } catch (error) {
-      console.error("Error initializing HomePresenter:", error);
-      this.showError("GAGAl MEMUAT CERITA");
+      console.error('Error initializing HomePresenter:', error);
+      this.showError('GAGAl MEMUAT CERITA');
       this.hideLoading();
     }
   }
-  
-  
 
   showLoading() {
     if (this.#globalLoadingOverlay) {
       this.#globalLoadingOverlay.style.display = 'flex';
     }
-    
+
     if (this.#loadingIndicator) {
       this.#loadingIndicator.style.display = 'block';
     }
@@ -67,7 +66,7 @@ export default class HomePage {
     if (this.#globalLoadingOverlay) {
       this.#globalLoadingOverlay.style.display = 'none';
     }
-    
+
     if (this.#loadingIndicator) {
       this.#loadingIndicator.style.display = 'none';
     }
@@ -78,27 +77,25 @@ export default class HomePage {
       console.error("Element 'stories-container' not found.");
       return;
     }
-    
+
     if (!stories || stories.length === 0) {
-      this.#storiesContainer.innerHTML = "<p>Belum ada cerita untuk ditampilkan.</p>";
+      this.#storiesContainer.innerHTML =
+        '<p>Belum ada cerita untuk ditampilkan.</p>';
       return;
     }
-    
 
     this.#storiesContainer.innerHTML = stories
       .map((story) => new StoryCard(story).render())
       .join('');
-
   }
-
 
   attachStoryCardListeners(stories) {
     const storyCards = document.querySelectorAll('.story-card');
-    storyCards.forEach(card => {
+    storyCards.forEach((card) => {
       card.addEventListener('click', (e) => {
         e.stopPropagation();
         const storyId = card.dataset.storyId;
-        const story = stories.find(s => s.id === storyId);
+        const story = stories.find((s) => s.id === storyId);
         if (story) {
           if (document.startViewTransition) {
             document.startViewTransition(() => {
@@ -111,7 +108,6 @@ export default class HomePage {
       });
     });
   }
-
 
   showError(message) {
     this.hideLoading();

@@ -6,33 +6,32 @@ import MapPage from '../pages/map/map-page.js';
 
 const routes = {
   '/homepage': {
-    component : new HomePage(),
-    authRequired : true,
-    title : "Home"
+    component: new HomePage(),
+    authRequired: true,
+    title: 'Home',
   },
-  '/map':{
-    component : new MapPage(),
-    authRequired : true,
-    title : "Map"
+  '/map': {
+    component: new MapPage(),
+    authRequired: true,
+    title: 'Map',
   },
-  '/add-story':{
-    component : new AddStoryPage(),
-    authRequired : true,
-    title : "Add Story"
+  '/add-story': {
+    component: new AddStoryPage(),
+    authRequired: true,
+    title: 'Add Story',
   },
-  '/login' :{
-    component : new LoginPage(),
-    authRequired : false,
+  '/login': {
+    component: new LoginPage(),
+    authRequired: false,
     redirectIfAuth: true,
-    title : "Login"
+    title: 'Login',
   },
-  '/register' : {
-    component : new RegisterPage(),
-    authRequired : false,
+  '/register': {
+    component: new RegisterPage(),
+    authRequired: false,
     redirectIfAuth: true,
-    title : "Register"
-  }
+    title: 'Register',
+  },
 };
 
 export default routes;
-

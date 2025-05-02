@@ -1,13 +1,11 @@
-import RegisterPresenter from "./register-presenter";
+import RegisterPresenter from './register-presenter';
 
-
-
-export default class RegisterPage{
-    #presenter;
-    #loadingIndicator = null;
-    #globalLoadingOverlay = null;
-    async render(){
-        return `
+export default class RegisterPage {
+  #presenter;
+  #loadingIndicator = null;
+  #globalLoadingOverlay = null;
+  async render() {
+    return `
             <div class="container">
                 <div id="globalLoadingOverlay" class="global-loading-overlay">
                     <div class="loading-spinner"></div>
@@ -57,64 +55,65 @@ export default class RegisterPage{
                 </div>
             </div>
         `;
+  }
+
+  async afterRender() {
+    this.#loadingIndicator = document.querySelector('.loading-indicator');
+    this.#globalLoadingOverlay = document.getElementById(
+      'globalLoadingOverlay'
+    );
+
+    this.#presenter = new RegisterPresenter({ view: this });
+    const registerForm = document.getElementById('formRegister');
+
+    this.hideLoading();
+    if (registerForm) {
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name-input').value;
+        const email = document.getElementById('email-input').value;
+        const password = document.getElementById('password-input').value;
+        const userData = { name, email, password };
+
+        this.showLoading();
+
+        await this.#presenter.registerUser(userData);
+      });
+    }
+  }
+
+  showLoading() {
+    if (this.#globalLoadingOverlay) {
+      this.#globalLoadingOverlay.style.display = 'flex';
     }
 
-    async afterRender() {
-        this.#loadingIndicator = document.querySelector(".loading-indicator");
-        this.#globalLoadingOverlay = document.getElementById("globalLoadingOverlay");
+    if (this.#loadingIndicator) {
+      this.#loadingIndicator.style.display = 'block';
+    }
+  }
 
-        this.#presenter = new RegisterPresenter({view : this});
-        const registerForm = document.getElementById("formRegister");
-        
-        this.hideLoading();
-        if(registerForm){
-            registerForm.addEventListener("submit",async(e)=>{
-                e.preventDefault();
-    
-                const name = document.getElementById("name-input").value;
-                const email = document.getElementById("email-input").value;
-                const password = document.getElementById("password-input").value;
-                const userData = {name,email,password};
-            
-                this.showLoading();
-            
-                await this.#presenter.registerUser(userData);
-            });
-        }
+  hideLoading() {
+    if (this.#globalLoadingOverlay) {
+      this.#globalLoadingOverlay.style.display = 'none';
     }
 
-
-    showLoading() {
-        if (this.#globalLoadingOverlay) {
-          this.#globalLoadingOverlay.style.display = 'flex';
-        }
-        
-        if (this.#loadingIndicator) {
-          this.#loadingIndicator.style.display = 'block';
-        }
+    if (this.#loadingIndicator) {
+      this.#loadingIndicator.style.display = 'none';
     }
+  }
 
-    hideLoading() {
-        if (this.#globalLoadingOverlay) {
-          this.#globalLoadingOverlay.style.display = 'none';
-        }
-        
-        if (this.#loadingIndicator) {
-          this.#loadingIndicator.style.display = 'none';
-        }
+  showRegisterError(message) {
+    const errorMessage = document.getElementById('errorRegister');
+    if (errorMessage) {
+      errorMessage.hidden = false;
+      errorMessage.textContent = message;
+    } else {
+      console.log('errorMessage ID tidak ditemukan!');
     }
+  }
 
-    showRegisterError(message){
-        const errorMessage = document.getElementById("errorRegister");
-        if(errorMessage){
-            errorMessage.hidden = false;
-            errorMessage.textContent = message;
-        } else {
-            console.log("errorMessage ID tidak ditemukan!");
-        }
-    }
-
-    navigateToLogin(){
-        window.location.hash = "#/login";
-    }
+  navigateToLogin() {
+    window.location.hash = '#/login';
+  }
 }

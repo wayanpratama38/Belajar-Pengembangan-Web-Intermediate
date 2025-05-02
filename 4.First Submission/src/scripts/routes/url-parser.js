@@ -1,5 +1,5 @@
-import routes from "./routes";
-import { isLoggedIn } from "../utils/auth";
+import routes from './routes';
+import { isLoggedIn } from '../utils/auth';
 
 function extractPathnameSegments(path) {
   const splitUrl = path.split('/');
@@ -25,9 +25,9 @@ function constructRouteFromSegments(pathSegments) {
 }
 
 export function getActivePathname() {
-  const rawHash = location.hash.replace("#","");
-  if(rawHash==="/" || rawHash===""){
-    return "/homepage";
+  const rawHash = location.hash.replace('#', '');
+  if (rawHash === '/' || rawHash === '') {
+    return '/homepage';
   }
   return rawHash;
 }
@@ -55,15 +55,15 @@ export function parsePathname(pathname) {
 export function resolveRoute() {
   const path = getActivePathname();
   const routePattern = getActiveRoute();
-  const route = routes[routePattern]
-  
+  const route = routes[routePattern];
+
   if (route?.authRequired && !isLoggedIn()) {
     return { redirect: '#/login' };
   }
-  
+
   if (route?.redirectIfAuth && isLoggedIn()) {
     return { redirect: '#/homepage' };
   }
 
-  return route || routes["#/homepage"];
+  return route || routes['#/homepage'];
 }

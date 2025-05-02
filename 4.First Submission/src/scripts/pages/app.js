@@ -1,7 +1,6 @@
 import { getActivePathname, resolveRoute } from '../routes/url-parser';
 import { clearAuthData, isLoggedIn } from '../utils/auth';
 
-
 class App {
   #content = null;
   #drawerButton = null;
@@ -11,12 +10,16 @@ class App {
     this.#content = content;
     this.#drawerButton = drawerButton;
     this.#navigationDrawer = navigationDrawer;
-    
-    if(window.location.hash === "#/" || window.location.hash === "" || window.location.hash==="/#"){
-      window.location.hash = "#/homepage";
+
+    if (
+      window.location.hash === '#/' ||
+      window.location.hash === '' ||
+      window.location.hash === '/#'
+    ) {
+      window.location.hash = '#/homepage';
     }
     this._setupDrawer();
-    this.renderPage()
+    this.renderPage();
   }
 
   _setupDrawer() {
@@ -27,14 +30,19 @@ class App {
 
     document.body.addEventListener('click', (event) => {
       const path = event.composedPath();
-      const isClickInsideDrawer = path.some(el => el === this.#navigationDrawer);
-      const isClickOnButton = path.some(el => el === this.#drawerButton);
+      const isClickInsideDrawer = path.some(
+        (el) => el === this.#navigationDrawer
+      );
+      const isClickOnButton = path.some((el) => el === this.#drawerButton);
 
       if (!isClickInsideDrawer && !isClickOnButton) {
         this.#navigationDrawer.classList.remove('open');
       }
 
-      if (!this.#navigationDrawer.contains(event.target) && !this.#drawerButton.contains(event.target)) {
+      if (
+        !this.#navigationDrawer.contains(event.target) &&
+        !this.#drawerButton.contains(event.target)
+      ) {
         this.#navigationDrawer.classList.remove('open');
       }
 
@@ -42,17 +50,19 @@ class App {
         if (link.contains(event.target)) {
           this.#navigationDrawer.classList.remove('open');
         }
-      })
+      });
     });
   }
 
-  _updateNavigation(){
-    const authLinks = isLoggedIn() ? `
+  _updateNavigation() {
+    const authLinks = isLoggedIn()
+      ? `
       <li><a href="#/homepage" aria-label="Tombol ke Homepage" >Homepage</a></li>
       <li><a href="#/map" aria-label="Tombol ke Map Page">Map</a></li>
       <li><a href="#/add-story" aria-label="Tombol ke Add Story Page">Add Story</a><li>
       <li><button id="logoutBtn" aria-label="Tombol Log Out">Logout</button></li>
-    ` : `
+    `
+      : `
       <li><a href="#/login" aria-label="Tombol Ke Login Page">Login</a></li>
       <li><a href="#/register" aria-label="Tombol ke Register Page">Register</a></li>
     `;
@@ -64,7 +74,7 @@ class App {
       logoutBtn.addEventListener('click', () => {
         clearAuthData();
         window.location.hash = '#/login';
-        console.log("LOGOUT SUCCESS!")
+        console.log('LOGOUT SUCCESS!');
       });
     }
   }
@@ -88,8 +98,6 @@ class App {
       document.title = 'Not Found';
     }
   }
-
-  
 }
 
 export default App;

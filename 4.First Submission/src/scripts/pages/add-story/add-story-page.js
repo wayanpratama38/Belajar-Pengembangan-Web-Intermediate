@@ -1,17 +1,17 @@
-import AddStoryPresenter from "./add-story-presenter";
+import AddStoryPresenter from './add-story-presenter';
 
-export default class AddStoryPage{
-    #presenter;
-    #videoElement;
-    #photoCanvasElement;
-    #capturedCameraDataURL = null;
+export default class AddStoryPage {
+  #presenter;
+  #videoElement;
+  #photoCanvasElement;
+  #capturedCameraDataURL = null;
 
-    constructor(){
-        this.#presenter = new AddStoryPresenter({view : this});
-    }
+  constructor() {
+    this.#presenter = new AddStoryPresenter({ view: this });
+  }
 
-    async render(){
-        return `
+  async render() {
+    return `
             <section class="add-story view-transition-content">
                 <div class="heading--container" aria-label="Heading Container">
                     <h1 aria-label="Add Story Page">Tambah Cerita Baru</h1>
@@ -64,115 +64,127 @@ export default class AddStoryPage{
                 <div id="successMessage" class="success-message" hidden aria-live="polite">Cerita berhasil ditambahkan!</div>
             </section>
 
-        `
+        `;
+  }
+
+  async afterRender() {
+    this.#videoElement = document.getElementById('cameraView');
+    this.#photoCanvasElement = document.getElementById('photoCanvas');
+
+    document
+      .getElementById('captureBtn')
+      .addEventListener('click', () => this.handleCaptureButtonClick());
+    document
+      .getElementById('photoFile')
+      .addEventListener('change', (e) =>
+        this.#presenter.handleFileInput(e.target.files[0])
+      );
+    document
+      .getElementById('includeLocation')
+      .addEventListener('change', (e) =>
+        this.#presenter.handleLocation(e.target.checked)
+      );
+    document
+      .getElementById('storyForm')
+      .addEventListener('submit', (e) => this.handleSubmit(e));
+
+    await this.#presenter.initializeCamera();
+  }
+
+  setCameraStream(stream) {
+    this.#videoElement.srcObject = stream;
+    this.#videoElement.addEventListener('loadedmetadata', () => {
+      this.#videoElement.play().catch((error) => {
+        console.log('Video play interrupted:', error);
+      });
+    });
+  }
+
+  captureCameraFrame() {
+    const context = this.#photoCanvasElement.getContext('2d');
+    const maxWidth = 640;
+    const maxHeight = 480;
+    let width = this.#videoElement.videoWidth;
+    let height = this.#videoElement.videoHeight;
+
+    if (width > maxWidth) {
+      height *= maxWidth / width;
+      width = maxWidth;
+    }
+    if (height > maxHeight) {
+      width *= maxHeight / height;
+      height = maxHeight;
+    }
+    this.#photoCanvasElement.width = width;
+    this.#photoCanvasElement.height = height;
+    context.drawImage(this.#videoElement, 0, 0, width, height);
+    return this.#photoCanvasElement.toDataURL('image/jpeg', 0.8);
+  }
+
+  setLocationStatus(isIncluded) {
+    const locationCheckbox = document.getElementById('includeLocation');
+    locationCheckbox.checked = isIncluded;
+  }
+
+  showCameraError(message) {
+    document.getElementById('errorMessage').textContent = message;
+  }
+
+  showLocationError(message) {
+    document.getElementById('errorMessage').textContent = message;
+  }
+
+  showSubmitError(message) {
+    document.getElementById('errorMessage').hidden = false;
+    document.getElementById('errorMessage').textContent = message;
+  }
+
+  showStoryAddedMessage() {
+    const successMessageElement = document.getElementById('successMessage');
+    if (successMessageElement) {
+      successMessageElement.removeAttribute('hidden');
+      setTimeout(() => {
+        successMessageElement.setAttribute('hidden', true);
+      }, 3000);
+    } else {
+      console.error("Elemen dengan ID 'successMessage' tidak ditemukan!");
+    }
+  }
+
+  navigateToHomepage() {
+    window.dispatchEvent(new CustomEvent('story-added'));
+    window.location.hash = '#/homepage';
+  }
+
+  async handleCaptureButtonClick() {
+    const photoDataURL = this.#presenter.capturePhoto();
+    if (photoDataURL) {
+      this.#capturedCameraDataURL = photoDataURL;
+      this.#videoElement.style.display = 'none';
+      this.#photoCanvasElement.removeAttribute('hidden');
+    }
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    let imageFile = formData.get('photo');
+
+    if (this.#capturedCameraDataURL) {
+      const blob = await fetch(this.#capturedCameraDataURL).then((r) =>
+        r.blob()
+      );
+      const timestamp = new Date().getTime();
+      const filename = `captured_${timestamp}.jpg`;
+      imageFile = new File([blob], filename, { type: 'image/jpeg' });
+      formData.set('photo', imageFile);
     }
 
-    async afterRender() {
-        this.#videoElement = document.getElementById("cameraView")
-        this.#photoCanvasElement = document.getElementById("photoCanvas")
+    await this.#presenter.submitStory(formData);
+  }
 
-        document.getElementById('captureBtn').addEventListener('click', () => this.handleCaptureButtonClick());
-        document.getElementById('photoFile').addEventListener('change', (e) => this.#presenter.handleFileInput(e.target.files[0]));
-        document.getElementById('includeLocation').addEventListener('change', (e) =>  this.#presenter.handleLocation(e.target.checked));
-        document.getElementById('storyForm').addEventListener('submit', (e) => this.handleSubmit(e));
-
-        await this.#presenter.initializeCamera();
-    }
-
-    setCameraStream(stream) {
-        this.#videoElement.srcObject = stream;
-        this.#videoElement.addEventListener('loadedmetadata', () => {
-            this.#videoElement.play().catch((error) => {
-                console.log("Video play interrupted:", error);
-            });
-        });
-    }
-
-    captureCameraFrame() {
-        const context = this.#photoCanvasElement.getContext('2d');
-        const maxWidth = 640;
-        const maxHeight = 480;
-        let width = this.#videoElement.videoWidth;
-        let height = this.#videoElement.videoHeight;
-
-        if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-        }
-        if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-        }
-        this.#photoCanvasElement.width = width;
-        this.#photoCanvasElement.height = height;
-        context.drawImage(this.#videoElement, 0, 0, width, height);
-        return this.#photoCanvasElement.toDataURL('image/jpeg',0.8);
-    }
-
-    setLocationStatus(isIncluded) {
-        const locationCheckbox = document.getElementById('includeLocation');
-        locationCheckbox.checked = isIncluded;
-    }
-    
-    showCameraError(message) {
-        document.getElementById('errorMessage').textContent = message;
-    }
-    
-    showLocationError(message) {
-        document.getElementById('errorMessage').textContent = message;
-    }
-    
-    showSubmitError(message) {
-        document.getElementById('errorMessage').hidden = false;
-        document.getElementById('errorMessage').textContent = message;
-    }
-    
-    showStoryAddedMessage() {
-        const successMessageElement = document.getElementById('successMessage');
-        if (successMessageElement) {
-            successMessageElement.removeAttribute('hidden');
-            setTimeout(() => {
-              successMessageElement.setAttribute('hidden', true);
-            }, 3000);
-          } else {
-            console.error("Elemen dengan ID 'successMessage' tidak ditemukan!");
-        };
-    }
-    
-    navigateToHomepage() {
-        window.dispatchEvent(new CustomEvent('story-added'));
-        window.location.hash = '#/homepage';
-    }
-
-    async handleCaptureButtonClick() {
-        const photoDataURL = this.#presenter.capturePhoto();
-        if (photoDataURL) {
-          this.#capturedCameraDataURL = photoDataURL;
-          this.#videoElement.style.display = 'none';
-          this.#photoCanvasElement.removeAttribute('hidden')
-        }
-      }
-    
-    async handleSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        let imageFile = formData.get('photo');
-                
-        if (this.#capturedCameraDataURL) {
-            const blob = await fetch(this.#capturedCameraDataURL).then(r => r.blob());
-            const timestamp = new Date().getTime();
-            const filename = `captured_${timestamp}.jpg`;
-            imageFile = new File([blob], filename, { type: 'image/jpeg' });
-            formData.set('photo', imageFile);
-        }
-
-        await this.#presenter.submitStory(formData);
-    }
-    
-    destroy() {
-        this.#presenter.destroy();
-
-    }
-      
+  destroy() {
+    this.#presenter.destroy();
+  }
 }

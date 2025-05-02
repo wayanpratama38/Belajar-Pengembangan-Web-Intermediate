@@ -1,12 +1,11 @@
+import LoginPresenter from './login-presenter.js';
 
-import LoginPresenter from "./login-presenter.js";
-
-export default class LoginPage{
-    #presenter; 
-    #loadingIndicator = null;
-    #globalLoadingOverlay = null;
-    async render(){
-        return `
+export default class LoginPage {
+  #presenter;
+  #loadingIndicator = null;
+  #globalLoadingOverlay = null;
+  async render() {
+    return `
             <div class="container view-transition-content">
                 <div id="globalLoadingOverlay" class="global-loading-overlay">
                     <div class="loading-spinner"></div>
@@ -45,62 +44,61 @@ export default class LoginPage{
                 </div>
             </div>
         `;
+  }
+  async afterRender() {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    this.#loadingIndicator = document.querySelector('.loading-spinner');
+    this.#globalLoadingOverlay = document.getElementById(
+      'globalLoadingOverlay'
+    );
+    this.#presenter = new LoginPresenter({ view: this });
+    const formLogin = document.getElementById('formLogin');
+
+    this.hideLoading();
+    if (formLogin) {
+      formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email-input').value;
+        const password = document.getElementById('password-input').value;
+        const userData = { email, password };
+        this.showLoading();
+        await this.#presenter.loginUser(userData);
+      });
     }
-    async afterRender() {
-        await new Promise(resolve => setTimeout(resolve, 50));
-        this.#loadingIndicator = document.querySelector(".loading-spinner");
-        this.#globalLoadingOverlay = document.getElementById("globalLoadingOverlay");
-        this.#presenter = new LoginPresenter({ view : this});
-        const formLogin = document.getElementById("formLogin");
-        
-        
-        this.hideLoading();
-        if(formLogin){
-            formLogin.addEventListener('submit', async(e)=>{
-                e.preventDefault();
-                
-                const email = document.getElementById("email-input").value;
-                const password = document.getElementById("password-input").value;
-                const userData = {email,password};
-                this.showLoading();
-                await this.#presenter.loginUser(userData);
-                
-            });
-        }
+  }
+
+  showLoginError(message) {
+    const errorElement = document.getElementById('loginError');
+    if (errorElement) {
+      errorElement.hidden = false;
+      errorElement.textContent = message;
+    } else {
+      console.log('Error dengan id loginError tidak ditemukan');
+    }
+  }
+
+  showLoading() {
+    if (this.#globalLoadingOverlay) {
+      this.#globalLoadingOverlay.style.display = 'flex';
     }
 
-    showLoginError(message){
-        const errorElement = document.getElementById("loginError");
-        if(errorElement){
-            errorElement.hidden = false;
-            errorElement.textContent = message;
-        }else{
-            console.log("Error dengan id loginError tidak ditemukan");
-        }
+    if (this.#loadingIndicator) {
+      this.#loadingIndicator.style.display = 'block';
+    }
+  }
+
+  hideLoading() {
+    if (this.#globalLoadingOverlay) {
+      this.#globalLoadingOverlay.style.display = 'none';
     }
 
-    showLoading() {
-        if (this.#globalLoadingOverlay) {
-          this.#globalLoadingOverlay.style.display = 'flex';
-        }
-        
-        if (this.#loadingIndicator) {
-          this.#loadingIndicator.style.display = 'block';
-        }
+    if (this.#loadingIndicator) {
+      this.#loadingIndicator.style.display = 'none';
     }
+  }
 
-    hideLoading() {
-        if (this.#globalLoadingOverlay) {
-          this.#globalLoadingOverlay.style.display = 'none';
-        }
-        
-        if (this.#loadingIndicator) {
-          this.#loadingIndicator.style.display = 'none';
-        }
-    }
-
-    navigateToHomepage(){
-        window.location.hash = "#/homepage";
-    }
-
+  navigateToHomepage() {
+    window.location.hash = '#/homepage';
+  }
 }

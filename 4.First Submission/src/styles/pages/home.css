@@ -1,15 +1,15 @@
 /* Home Page Styles */
 .heading--container {
-    justify-content: center;
-    text-align: center;
-    background-color: whitesmoke;
-    border-radius: 1.5rem;
-    margin-bottom: 0.5rem;
+  justify-content: center;
+  text-align: center;
+  background-color: whitesmoke;
+  border-radius: 1.5rem;
+  margin-bottom: 0.5rem;
 }
-  
+
 .stories-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
 }

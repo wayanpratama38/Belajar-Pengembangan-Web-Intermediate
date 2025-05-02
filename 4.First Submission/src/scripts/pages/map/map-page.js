@@ -1,16 +1,15 @@
-import MapPresenter  from "./map-presenter";
-import L from "leaflet";
+import MapPresenter from './map-presenter';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'; 
-import 'leaflet-defaulticon-compatibility'; 
-
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+import 'leaflet-defaulticon-compatibility';
 
 export default class MapPage {
   #presenter;
   #map;
-  #storiesLayer; 
-  #loadingOverlay; 
-  #errorMessageElement; 
+  #storiesLayer;
+  #loadingOverlay;
+  #errorMessageElement;
 
   async render() {
     return `
@@ -35,93 +34,108 @@ export default class MapPage {
 
     const mapContainer = document.getElementById('mapContainer');
     if (!mapContainer) {
-        console.error("View: Map container element not found!");
-        this.showError("Gagal menampilkan peta: Elemen peta tidak ditemukan.");
-        this.hideLoading();
-        return;
+      console.error('View: Map container element not found!');
+      this.showError('Gagal menampilkan peta: Elemen peta tidak ditemukan.');
+      this.hideLoading();
+      return;
     }
-    
+
     this.#initMap();
 
     this.#presenter = new MapPresenter({ view: this });
     await this.#presenter.init();
   }
 
-  #initMap(){
+  #initMap() {
     this.#map = L.map('mapContainer').setView([-3.0, 118.0], 5);
-   
-    const osmStandard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    
-    const openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      maxZoom: 17,
-      attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-    });
 
-    const cartoDbPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-    });
+    const osmStandard = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    );
 
-    const cartoDbDarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-    });
-    
+    const openTopoMap = L.tileLayer(
+      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      {
+        maxZoom: 17,
+        attribution:
+          'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+      }
+    );
+
+    const cartoDbPositron = L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
+      }
+    );
+
+    const cartoDbDarkMatter = L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
+      }
+    );
+
     const baseLayers = {
-      "OpenStreetMap Standard": osmStandard,
-      "OpenTopoMap": openTopoMap,
-      "Carto DB Positron" :cartoDbPositron,
-      "Carto DB Dark Matter" : cartoDbDarkMatter  
+      'OpenStreetMap Standard': osmStandard,
+      OpenTopoMap: openTopoMap,
+      'Carto DB Positron': cartoDbPositron,
+      'Carto DB Dark Matter': cartoDbDarkMatter,
     };
 
-    
     this.#storiesLayer = L.featureGroup();
 
     const overlayLayers = {
-      "Lokasi Cerita": this.#storiesLayer,
+      'Lokasi Cerita': this.#storiesLayer,
     };
-    
+
     L.control.layers(baseLayers, overlayLayers).addTo(this.#map);
 
     osmStandard.addTo(this.#map);
 
     this.#storiesLayer.addTo(this.#map);
 
-
     this.#map.invalidateSize();
-
   }
 
   renderMapMarkers(locations) {
     if (!this.#map || !this.#storiesLayer) {
-      console.error("Belum terinisialisasi");
+      console.error('Belum terinisialisasi');
       return;
     }
 
     this.#storiesLayer.clearLayers();
 
-    locations.forEach(location => {         
-        if (location && location.lat !== null && location.lon !== null) {
-            const marker = L.marker([location.lat, location.lon]);
+    locations.forEach((location) => {
+      if (location && location.lat !== null && location.lon !== null) {
+        const marker = L.marker([location.lat, location.lon]);
 
-            let popupContent = `<b>${location.name || 'Tanpa Nama'}</b>`;
-            if (location.description) {
-              const shortDescription = location.description.substring(0, 20) + (location.description.length > 20 ? '...' : '');
-              popupContent += `<br>${shortDescription}`;
-            }
-          if (location.photoUrl) {
-              popupContent += `<br><img src="${location.photoUrl}" alt="Gambar story ${location.nama}" class="image-popup">`;
-          }
-          
-          if (location.createdAt) {
-              const date = new Date(location.createdAt).toLocaleDateString('id-ID');
-              popupContent += `<br><small>${date}</small>`;
-          }
-          marker.bindPopup(popupContent);
-          marker.addTo(this.#storiesLayer);
-        } else {
-          console.warn("skip, karena tidak valid", location);
+        let popupContent = `<b>${location.name || 'Tanpa Nama'}</b>`;
+        if (location.description) {
+          const shortDescription =
+            location.description.substring(0, 20) +
+            (location.description.length > 20 ? '...' : '');
+          popupContent += `<br>${shortDescription}`;
         }
+        if (location.photoUrl) {
+          popupContent += `<br><img src="${location.photoUrl}" alt="Gambar story ${location.nama}" class="image-popup">`;
+        }
+
+        if (location.createdAt) {
+          const date = new Date(location.createdAt).toLocaleDateString('id-ID');
+          popupContent += `<br><small>${date}</small>`;
+        }
+        marker.bindPopup(popupContent);
+        marker.addTo(this.#storiesLayer);
+      } else {
+        console.warn('skip, karena tidak valid', location);
+      }
     });
 
     if (this.#storiesLayer.getLayers().length > 0) {
@@ -135,7 +149,7 @@ export default class MapPage {
           this.#map.setView([-3.0, 118.0], 5);
         }
       } catch (error) {
-        console.error("Error waktu bound : ", error);
+        console.error('Error waktu bound : ', error);
         this.#map.setView([-3.0, 118.0], 5);
       }
     } else {
@@ -145,9 +159,9 @@ export default class MapPage {
 
   showLoading() {
     if (this.#loadingOverlay) {
-        this.#loadingOverlay.style.display = 'flex'; 
+      this.#loadingOverlay.style.display = 'flex';
     }
-    this.hideError(); 
+    this.hideError();
   }
 
   hideLoading() {
@@ -157,22 +171,22 @@ export default class MapPage {
   }
 
   showError(message) {
-      console.error("Pesan error", message);
-      if (this.#errorMessageElement) {
-          this.#errorMessageElement.textContent = message;
-          this.#errorMessageElement.style.display = 'block';
-      }
-      
-      this.hideLoading();
-      
-      if(this.#storiesLayer) this.#storiesLayer.clearLayers();
-      if(this.#map) this.#map.setView([-3.0, 118.0], 5);
+    console.error('Pesan error', message);
+    if (this.#errorMessageElement) {
+      this.#errorMessageElement.textContent = message;
+      this.#errorMessageElement.style.display = 'block';
+    }
+
+    this.hideLoading();
+
+    if (this.#storiesLayer) this.#storiesLayer.clearLayers();
+    if (this.#map) this.#map.setView([-3.0, 118.0], 5);
   }
 
   hideError() {
     if (this.#errorMessageElement) {
-        this.#errorMessageElement.textContent = '';
-        this.#errorMessageElement.style.display = 'none';
+      this.#errorMessageElement.textContent = '';
+      this.#errorMessageElement.style.display = 'none';
     }
   }
 }

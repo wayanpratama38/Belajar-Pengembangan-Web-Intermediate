@@ -14,7 +14,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     await app.renderPage();
   });
 });
-
-
-
-

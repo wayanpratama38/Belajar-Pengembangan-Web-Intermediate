@@ -1,23 +1,23 @@
 export default class StoryCard {
-    constructor(story) {
-      this.story = story;
-    }
-  
-    #formatDate(dateString) {
-      const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      };
-      return new Date(dateString).toLocaleDateString('id-ID', options);
-    }
-  
-    render() {
-      const { id, name, description, photoUrl, createdAt } = this.story;
-      
-      return `
+  constructor(story) {
+    this.story = story;
+  }
+
+  #formatDate(dateString) {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return new Date(dateString).toLocaleDateString('id-ID', options);
+  }
+
+  render() {
+    const { id, name, description, photoUrl, createdAt } = this.story;
+
+    return `
         <article class="story-card" data-story-id="${id}" aria-label="Sebuah container kartu">
           <div class="story-image-container" aria-label="Gambar story si ${name}">
             <img 
@@ -37,5 +37,5 @@ export default class StoryCard {
           </div>
         </article>
       `;
-    }
   }
+}
