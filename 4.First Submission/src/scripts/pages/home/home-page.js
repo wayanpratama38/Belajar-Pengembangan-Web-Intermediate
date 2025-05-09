@@ -8,7 +8,7 @@ export default class HomePage {
   #loadingIndicator = null;
   #globalLoadingOverlay = null;
   #lightboxManager;
-  #skipLinkHandler = null ;
+  #skipLinkHandler = null;
 
   async render() {
     return `
@@ -40,7 +40,7 @@ export default class HomePage {
       return;
     }
 
-    this.#storiesContainer.setAttribute("tabindex", "-1");
+    this.#storiesContainer.setAttribute('tabindex', '-1');
 
     this.#setupSkipLink();
 
@@ -60,29 +60,25 @@ export default class HomePage {
   #setupSkipLink() {
     const skipLink = document.querySelector('.skip-link');
     if (skipLink) {
-      
       if (this.#skipLinkHandler) {
         skipLink.removeEventListener('click', this.#skipLinkHandler);
       }
 
       this.#skipLinkHandler = (event) => {
-   
         setTimeout(() => {
           if (this.#storiesContainer) {
-            const firstStoryCard = this.#storiesContainer.querySelector('.story-card');
-            const noStoriesMessage = this.#storiesContainer.querySelector('p'); 
+            const firstStoryCard =
+              this.#storiesContainer.querySelector('.story-card');
+            const noStoriesMessage = this.#storiesContainer.querySelector('p');
 
             if (firstStoryCard) {
-              
               firstStoryCard.focus({ preventScroll: true });
             } else if (noStoriesMessage) {
-              
               if (!noStoriesMessage.hasAttribute('tabindex')) {
                 noStoriesMessage.setAttribute('tabindex', '-1');
               }
               noStoriesMessage.focus({ preventScroll: true });
             } else {
-              
               this.#storiesContainer.focus({ preventScroll: true });
             }
           }
@@ -91,7 +87,6 @@ export default class HomePage {
       skipLink.addEventListener('click', this.#skipLinkHandler);
     }
   }
-
 
   showLoading() {
     if (this.#globalLoadingOverlay) {

@@ -4,41 +4,51 @@ export default class AddStoryPresenter {
   #view;
   #model;
   #mediaStream;
-  #capturedPhoto;
-  #geoLocation;
 
   constructor({ view }) {
     this.#model = StoryModel;
     this.#view = view;
     this.#mediaStream = null;
-    this.#capturedPhoto = null;
-    this.#geoLocation = null;
   }
 
   async initializeCamera() {
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        this.#view.showCameraError('Kamera tidak didukung oleh browser ini.');
+        return;
+      }
       this.#mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' },
         audio: false,
       });
-
-      const videoElement = document.getElementById('cameraView');
-      videoElement.srcObject = this.#mediaStream;
-
-      videoElement.addEventListener('loadedmetadata', () => {
-        videoElement.play().catch((error) => {
-          console.log('Video play interrupted:', error);
-        });
-      });
+      this.#view.setCameraStream(this.#mediaStream);
     } catch (error) {
-      console.log('Error Accessing camera ; ', error);
-      this.#view.showCameraError('Akses kamera ditolak!');
+      console.error('Error Accessing camera: ', error);
+      let message = 'Akses kamera ditolak atau kamera tidak ditemukan.';
+      if (
+        error.name === 'NotFoundError' ||
+        error.name === 'DevicesNotFoundError'
+      ) {
+        message = 'Tidak ada kamera yang ditemukan.';
+      } else if (
+        error.name === 'NotAllowedError' ||
+        error.name === 'PermissionDeniedError'
+      ) {
+        message =
+          'Akses ke kamera tidak diizinkan. Periksa pengaturan browser Anda.';
+      }
+      this.#view.showCameraError(message);
       this.#stopMediaStream();
     }
   }
 
   capturePhoto() {
-    if (!this.#mediaStream) return;
+    if (!this.#mediaStream || !this.#mediaStream.active) {
+      this.#view.showCameraError(
+        'Stream kamera tidak aktif untuk mengambil foto.'
+      );
+      return null;
+    }
     return this.#view.captureCameraFrame();
   }
 
@@ -46,48 +56,15 @@ export default class AddStoryPresenter {
     if (this.#mediaStream) {
       this.#mediaStream.getTracks().forEach((track) => {
         track.stop();
-        track.enabled = false;
       });
       this.#mediaStream = null;
-      const video = document.getElementById('cameraView');
-      if (video) {
-        video.srcObject = null;
-      }
     }
   }
 
   handleFileInput(file) {
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.#capturedPhoto = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      this.#stopMediaStream();
     }
-  }
-
-  async handleLocation(isChecked) {
-    if (isChecked) {
-      try {
-        this.#geoLocation = await this.#getCurrentLocation();
-        this.#view.setLocationStatus(true);
-      } catch (error) {
-        this.#view.showLocationError('GAGAL MENDAPATKAN LOKASI');
-        this.#view.setLocationStatus(false);
-      }
-    } else {
-      this.#geoLocation = null;
-      this.#view.setLocationStatus(false);
-    }
-  }
-
-  async #getCurrentLocation() {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
-        enableHighAccuracy: true,
-        timeout: 5000,
-      });
-    });
   }
 
   async submitStory(formData) {
@@ -103,13 +80,8 @@ export default class AddStoryPresenter {
     submitFormData.append('description', description);
     submitFormData.append('photo', photoFile);
 
-    if (this.#geoLocation) {
-      submitFormData.append('lat', this.#geoLocation.coords.latitude);
-      submitFormData.append('lon', this.#geoLocation.coords.longitude);
-    }
-
     try {
-      const response = await StoryModel.postNewStory(submitFormData);
+      const response = await this.#model.postNewStory(submitFormData);
       if (response.error) {
         this.#view.showSubmitError('Gagal mengunggah cerita.');
       } else {
@@ -118,8 +90,17 @@ export default class AddStoryPresenter {
         this.#view.navigateToHomepage();
       }
     } catch (error) {
-      console.error('Submission error:', error);
-      this.#view.showSubmitError('Gagal mengunggah cerita. Coba lagi.');
+      if (error.response && error.response.status === 413) {
+        this.#view.showSubmitError(
+          'Ukuran file masih terlalu besar untuk server.'
+        );
+      } else {
+        this.#view.showSubmitError(
+          'Terjadi kesalahan saat mengunggah cerita. Coba lagi.'
+        );
+      }
+    } finally {
+      this.#view.hideLoadingIndicatorForSubmit();
     }
   }
 
