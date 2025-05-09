@@ -8,6 +8,7 @@ export default class HomePage {
   #loadingIndicator = null;
   #globalLoadingOverlay = null;
   #lightboxManager;
+  #skipLinkHandler = null ;
 
   async render() {
     return `
@@ -39,6 +40,10 @@ export default class HomePage {
       return;
     }
 
+    this.#storiesContainer.setAttribute("tabindex", "-1");
+
+    this.#setupSkipLink();
+
     this.hideLoading();
     this.#lightboxManager = new LightboxManager();
     this.#presenter = new HomePresenter({ view: this });
@@ -51,6 +56,42 @@ export default class HomePage {
       this.hideLoading();
     }
   }
+
+  #setupSkipLink() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      
+      if (this.#skipLinkHandler) {
+        skipLink.removeEventListener('click', this.#skipLinkHandler);
+      }
+
+      this.#skipLinkHandler = (event) => {
+   
+        setTimeout(() => {
+          if (this.#storiesContainer) {
+            const firstStoryCard = this.#storiesContainer.querySelector('.story-card');
+            const noStoriesMessage = this.#storiesContainer.querySelector('p'); 
+
+            if (firstStoryCard) {
+              
+              firstStoryCard.focus({ preventScroll: true });
+            } else if (noStoriesMessage) {
+              
+              if (!noStoriesMessage.hasAttribute('tabindex')) {
+                noStoriesMessage.setAttribute('tabindex', '-1');
+              }
+              noStoriesMessage.focus({ preventScroll: true });
+            } else {
+              
+              this.#storiesContainer.focus({ preventScroll: true });
+            }
+          }
+        }, 0);
+      };
+      skipLink.addEventListener('click', this.#skipLinkHandler);
+    }
+  }
+
 
   showLoading() {
     if (this.#globalLoadingOverlay) {

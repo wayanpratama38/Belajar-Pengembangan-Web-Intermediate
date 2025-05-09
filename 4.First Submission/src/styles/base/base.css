@@ -123,9 +123,9 @@ textarea {
   background-color: #fefefe;
   color: #222;
   padding: 8px;
-  z-index: 100;
 }
 
 .skip-link:focus {
   top: 0;
+  z-index: 10000;
 }

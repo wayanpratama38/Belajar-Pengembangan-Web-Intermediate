@@ -18,8 +18,8 @@ export default class StoryCard {
     const { id, name, description, photoUrl, createdAt } = this.story;
 
     return `
-        <article class="story-card" data-story-id="${id}" aria-label="Sebuah container kartu">
-          <div class="story-image-container" aria-label="Gambar story si ${name}">
+        <article class="story-card" data-story-id="${id}" tabindex=0 aria-label="Sebuah container kartu">
+          <div class="story-image-container"  aria-label="Gambar story si ${name}">
             <img 
               src="${photoUrl}" 
               alt="story ${name} " 
