@@ -82,6 +82,11 @@ export async function subscribe() {
   );
   try {
     const registration = await navigator.serviceWorker.getRegistration();
+    if (!registration || !registration.active) {
+        console.error('Service worker not active or not found.');
+        alert('Service worker not ready. Please try again in a moment.');
+        return;
+    }
     pushSubscription = await registration.pushManager.subscribe(
       generateSubscribeOptions()
     );

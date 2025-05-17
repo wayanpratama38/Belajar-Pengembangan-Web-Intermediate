@@ -118,14 +118,6 @@ class App {
       subscribe();
     });
 
-    const notifyTxt = document.getElementById('notify-txt');
-    isCurrentPushSubscriptionAvailable().then((isSubscribe) => {
-      if (isSubscribe) {
-        notifyTxt.innerText = 'Notified!';
-      } else {
-        notifyTxt.innerText = 'Notify Me';
-      }
-    });
   }
 
   async renderPage() {
