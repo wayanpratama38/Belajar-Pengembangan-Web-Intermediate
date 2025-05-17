@@ -1,0 +1,16 @@
+.error-message {
+  color: #e74c3c;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+  background: #fdedec;
+  display: none;
+}
+
+.error-container {
+  padding: 15px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  margin: 15px 0;
+}

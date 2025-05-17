@@ -1,0 +1,53 @@
+.story-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.story-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.story-image-container {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.story-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.story-content {
+  padding: 1.5rem;
+}
+
+.story-title {
+  margin: 0 0 0.5rem 0;
+  color: #2d3436;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.story-description {
+  color: #636e72;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.story-date {
+  display: block;
+  color: black;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

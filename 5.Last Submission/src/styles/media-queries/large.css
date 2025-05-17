@@ -1,0 +1,190 @@
+@media screen and (max-width: 768px) {
+  .container {
+    padding-inline: 15px;
+  }
+
+  section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .main-header {
+    padding-block: 10px;
+    gap: 10px;
+  }
+
+  .brand-name {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.8rem;
+  }
+
+  .drawer-button {
+    font-size: 22px;
+    padding: 4px;
+  }
+
+  .nav-list {
+    gap: 10px 0;
+  }
+
+  .nav-list li a {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.95rem;
+    border-radius: 0.4rem;
+  }
+
+  .stories-container {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .story-content {
+    padding: 0.8rem;
+  }
+
+  .story-title {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .story-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+  }
+
+  .story-date {
+    font-size: 0.75rem;
+  }
+
+  .container-flex {
+    padding: 0.8rem;
+  }
+
+  .container-flex-form {
+    padding: 1.2rem;
+  }
+
+  .container-flex-form h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .container-flex-form p {
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+
+  .form-group input {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .confirm-button,
+  #logoutBtn {
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .confirm-button {
+    margin-bottom: 8px;
+  }
+
+  .add-story {
+    padding: 0.8rem;
+    margin: 1rem auto;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .camera-view {
+    max-height: 250px;
+  }
+
+  .photos-canvas {
+    max-height: 250px;
+  }
+
+  .capture-btn {
+    width: 45px;
+    height: 45px;
+    bottom: 0.6rem;
+  }
+
+  .capture-btn::after {
+    width: 20px;
+    height: 20px;
+  }
+
+  .file-input {
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .location-group {
+    margin: 1rem 0;
+  }
+
+  .location-group label {
+    font-size: 0.8rem;
+  }
+
+  .location-group input[type='text'] {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .error-message {
+    padding: 0.6rem;
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  #mapContainer {
+    height: 250px;
+    margin-top: 10px;
+  }
+
+  .image-popup {
+    max-width: 60px;
+    max-height: 60px;
+  }
+
+  .loading-spinner {
+    width: 35px;
+    height: 35px;
+    border-width: 3px;
+  }
+
+  .loading-text {
+    font-size: 0.95rem;
+  }
+
+  .error-container {
+    padding: 10px;
+    margin: 10px auto;
+    max-width: 95%;
+  }
+
+  .error-message {
+    font-size: 0.9rem;
+  }
+
+  .retry-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}

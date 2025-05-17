@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  overflow-x: hidden;
+}
+
+section {
+  background-color: lightskyblue;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+header {
+  background-color: lightskyblue;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-header {
+  min-height: 60px;
+  padding-block: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+textarea {
+  padding: 0.5rem;
+}
+
+.brand-name {
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  background-color: whitesmoke;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  display: inline-block;
+  transition:
+    transform 0.2s ease-out,
+    background-color 0.2s ease-out;
+}
+
+.navigation-drawer {
+  min-height: 100vh;
+  width: 250px;
+  padding: 20px 15px;
+  background-color: #fff;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  transition: transform 350ms ease-in-out;
+  z-index: 9999;
+}
+
+.navigation-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-button {
+  padding: 5px;
+  border: 0;
+  border-radius: 4px;
+  display: inline-block;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 24px;
+  color: #141e16;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.drawer-button:hover {
+  opacity: 0.8;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px 5px;
+  margin-top: 15px;
+}
+
+.nav-list li a {
+  padding: 0.8rem 1rem;
+  display: block;
+  color: #333;
+  font-weight: bold;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.brand-name:hover,
+.nav-list li a:hover {
+  transform: translateY(-2px);
+  background-color: wheat;
+}
+
+.main-content {
+  padding-block: 15px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background-color: #fefefe;
+  color: #222;
+  padding: 8px;
+}
+
+.skip-link:focus {
+  top: 0;
+  z-index: 10000;
+}
+
+.loading-spinner,
+.loading-spinner-small {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+}
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.confirm-button .loading-spinner-small {
+  border-left-color: #fff;
+}
