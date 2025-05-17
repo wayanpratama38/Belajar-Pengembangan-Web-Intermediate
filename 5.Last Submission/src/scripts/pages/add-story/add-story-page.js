@@ -319,20 +319,18 @@ export default class AddStoryPage {
       this.#capturedCameraDataURL = photoDataURL;
       this.#videoElement.style.display = 'none';
       this.#photoCanvasElement.removeAttribute('hidden');
-      
+
       const photoFileInput = document.getElementById('photoFile');
-        if (photoFileInput) {
-          photoFileInput.value = '';
-          console.log('handleCaptureButtonClick: File input reset.');
-        } else {
-          console.log(
-            'handleCaptureButtonClick: No photoDataURL returned from presenter.'
-          );
+      if (photoFileInput) {
+        photoFileInput.value = '';
+        console.log('handleCaptureButtonClick: File input reset.');
+      } else {
+        console.log(
+          'handleCaptureButtonClick: No photoDataURL returned from presenter.'
+        );
       }
     }
   }
-
-
 
   async #compressImageFile(
     file,
@@ -365,13 +363,11 @@ export default class AddStoryPage {
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-    
           canvas.toBlob(
             (blob) => {
               if (blob) {
-                
                 const compressedFile = new File([blob], file.name, {
-                  type: 'image/jpeg', 
+                  type: 'image/jpeg',
                   lastModified: Date.now(),
                 });
                 console.log(
@@ -385,8 +381,8 @@ export default class AddStoryPage {
                 reject(new Error('Canvas toBlob failed.'));
               }
             },
-            'image/jpeg', 
-            quality 
+            'image/jpeg',
+            quality
           );
         };
         img.onerror = reject;
@@ -416,7 +412,6 @@ export default class AddStoryPage {
         const timestamp = new Date().getTime();
         const filename = `captured_${timestamp}.jpg`;
         processedImageFile = new File([blob], filename, { type: 'image/jpeg' });
-        
       } catch (error) {
         console.error('Error converting camera dataURL to blob:', error);
         this.showSubmitError('Gagal memproses foto dari kamera.');
@@ -428,12 +423,12 @@ export default class AddStoryPage {
     ) {
       processedImageFile = originalImageFileFromInput;
       try {
-        const maxSizeBeforeCompression = 1 * 1024 * 1024; 
+        const maxSizeBeforeCompression = 1 * 1024 * 1024;
         if (processedImageFile.size > maxSizeBeforeCompression) {
           console.log(
             `Uploaded file is large (${processedImageFile.size} bytes), attempting compression.`
           );
-          this.showSubmitError('Ukuran file besar, mencoba mengompres...'); 
+          this.showSubmitError('Ukuran file besar, mencoba mengompres...');
           processedImageFile = await this.#compressImageFile(
             processedImageFile,
             800,
@@ -470,11 +465,15 @@ export default class AddStoryPage {
       return;
     }
 
-    if(!processedImageFile){
-      console.error("Critical Error: processedImageFile is unexpectedly null after processing paths.");
-        this.showSubmitError('Terjadi kesalahan internal saat menyiapkan gambar.');
-        this.hideLoadingIndicatorForSubmit();
-        return;
+    if (!processedImageFile) {
+      console.error(
+        'Critical Error: processedImageFile is unexpectedly null after processing paths.'
+      );
+      this.showSubmitError(
+        'Terjadi kesalahan internal saat menyiapkan gambar.'
+      );
+      this.hideLoadingIndicatorForSubmit();
+      return;
     }
     formData.append('photo', processedImageFile, processedImageFile.name);
 

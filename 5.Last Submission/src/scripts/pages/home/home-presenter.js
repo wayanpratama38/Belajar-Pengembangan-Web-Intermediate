@@ -1,13 +1,16 @@
+import NotificationModel from '../../data/notification-api';
 import StoryModel from '../../data/story-api';
 
 export default class HomePresenter {
   #model;
+  #notificationModel;
   #view;
   #storiesData;
   #storiesArray = [];
 
   constructor({ view }) {
     this.#model = StoryModel;
+    this.#notificationModel = NotificationModel;
     this.#view = view;
   }
 
@@ -38,6 +41,12 @@ export default class HomePresenter {
       return [];
     }
   }
+
+  // async notifyMe(){
+  //   try{
+  //     const response = await this.#notificationModel.pushSubscribeNotification(this)
+  //   }
+  // }
 
   #prepareStoriesArray() {
     if (Array.isArray(this.#storiesData)) {

@@ -1,12 +1,13 @@
-self.addEventListener("push",(event)=>{
-    console.log("Service worker working!");
+self.addEventListener('push', (event) => {
+  console.log('Service worker working!');
 
+  async function chainPromies() {
+    const data = await event.data.json();
 
-    async function chainPromies() {
-        await self.registration.showNotification("Cek Notif",{
-            body : "Terjadi notif"
-        })
-    }
+    await self.registration.showNotification(data.title, {
+      body: data.options.body,
+    });
+  }
 
-    event.waitUntil(chainPromies());
-})
+  event.waitUntil(chainPromies());
+});
