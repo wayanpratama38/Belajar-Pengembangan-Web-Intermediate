@@ -1,21 +1,8 @@
 import { getActivePathname, resolveRoute } from '../routes/url-parser';
 import { clearAuthData, isLoggedIn } from '../utils/auth';
+import { isServiceAvailable } from '../utils';
+import { subscribe } from '../utils/notification';
 
-
-async function serviceWorkerRegister() {
-    if(!('serviceWorker' in navigator)){
-      console.log("Service Worker API Not Supported!");
-      return;
-    }
-
-    try {
-      const registration = await navigator.serviceWorker.register("../../sw.js");
-      console.log("Service worker registration success!",registration)
-    } catch (error) {
-      console.log("Service worker registration failed!",error)
-    }
-    
-  }
 
 class App {
   #content = null;
@@ -81,6 +68,7 @@ class App {
       <li><a href="#/homepage" aria-label="Tombol ke Homepage" >Homepage</a></li>
       <li><a href="#/map" aria-label="Tombol ke Map Page">Map</a></li>
       <li><a href="#/add-story" aria-label="Tombol ke Add Story Page">Add Story</a><li>
+      <li><button id="notification-btn" aria-label="Tombol Notification">Notification</button></li>
       <li><button id="logoutBtn" aria-label="Tombol Log Out">Logout</button></li>
     `
       : `
@@ -100,11 +88,21 @@ class App {
     }
   }
 
-  async renderPage() {
-    serviceWorkerRegister();
-    const routeInfo = resolveRoute();
+  async #setUpPushNotification(){
+    const notificationButton = document.getElementById("notification-btn");
+    
+    
+    notificationButton.addEventListener("click",()=>{
+      subscribe();
+    })
 
+  }
+
+  async renderPage() {
+    const routeInfo = resolveRoute();
+    
     this._updateNavigation();
+   
 
     if (routeInfo.redirect) {
       window.location.hash = routeInfo.redirect;
@@ -119,6 +117,11 @@ class App {
     }
 
     this.#currentPage = null;
+
+    
+    if(isServiceAvailable()){
+      this.#setUpPushNotification();
+    }
 
     if (routeInfo.component) {
       this.#currentPage = routeInfo.component;
