@@ -1,6 +1,22 @@
 import { getActivePathname, resolveRoute } from '../routes/url-parser';
 import { clearAuthData, isLoggedIn } from '../utils/auth';
 
+
+async function serviceWorkerRegister() {
+    if(!('serviceWorker' in navigator)){
+      console.log("Service Worker API Not Supported!");
+      return;
+    }
+
+    try {
+      const registration = await navigator.serviceWorker.register("../../sw.js");
+      console.log("Service worker registration success!",registration)
+    } catch (error) {
+      console.log("Service worker registration failed!",error)
+    }
+    
+  }
+
 class App {
   #content = null;
   #drawerButton = null;
@@ -11,7 +27,7 @@ class App {
     this.#content = content;
     this.#drawerButton = drawerButton;
     this.#navigationDrawer = navigationDrawer;
-
+    
     if (
       window.location.hash === '#/' ||
       window.location.hash === '' ||
@@ -20,9 +36,12 @@ class App {
       window.location.hash = '#/homepage';
     }
 
+    
     this._setupDrawer();
     this.renderPage();
   }
+
+  
 
   _setupDrawer() {
     this.#drawerButton.addEventListener('click', (event) => {
@@ -82,6 +101,7 @@ class App {
   }
 
   async renderPage() {
+    serviceWorkerRegister();
     const routeInfo = resolveRoute();
 
     this._updateNavigation();
