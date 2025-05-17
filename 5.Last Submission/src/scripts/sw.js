@@ -8,8 +8,21 @@ import {
 } from 'workbox-strategies';
 import CONFIG from './config';
 
-const manifest = self.__WB_MANIFEST;
+// Make sure __WB_MANIFEST is properly populated by Workbox build process
+const manifest = self.__WB_MANIFEST || [];
 precacheAndRoute(manifest);
+
+// Immediately take control (skip waiting phase)
+self.addEventListener('install', (event) => {
+  console.log('New service worker installing...');
+  self.skipWaiting();
+});
+
+// Claim all clients once activated
+self.addEventListener('activate', (event) => {
+  console.log('New service worker activated and claiming clients.');
+  event.waitUntil(self.clients.claim());
+});
 
 registerRoute(
   ({ request, url }) => {

@@ -8,7 +8,7 @@
   "start_url": "/#",
   "icons" : [
     {
-        "src" : "./images/logo.png",
+        "src" : "./icons/icon-144x144.png",
         "type" : "image/png",
         "sizes" : "144x144",
         "purpose" : "any"
@@ -55,5 +55,45 @@
         "src": "./icons/maskable_icon_x512.png",
         "type": "image/png"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "./images/screenshot1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpg",
+      "form_factor": "wide"
+    },
+    {
+      "src":"./images/mobile/screenshot-mobile - 600x1267.png",
+      "sizes":"600x1267",
+      "type":"image/png",
+      "form_factor":"narrow"
+    }
+
+    ],
+    "shortcuts": [
+      {
+        "name": "Tambah Cerita Baru",
+        "short_name": "Tambah Cerita",
+        "description": "Buka halaman untuk menambahkan cerita baru",
+        "url": "/#/add-story",
+        "icons": [{ "src": "./icons/add-icon.svg", "sizes": "96x96" }]
+      },
+      {
+        "name": "Homepage Cerita",
+        "short_name": "Homepage Cerita",
+        "description": "Halaman Awal Cerita",
+        "url": "/#/homepage",
+        "icons": [{ "src": "./icons/dashboard-icon.svg", "sizes": "96x96" }]
+      },
+      {
+        "name": "Map Cerita",
+        "short_name": "Map Cerita",
+        "description": "Halaman Map Cerita",
+        "url": "/#/map",
+        "icons": [{ "src": "./icons/map-icon.svg", "sizes": "96x96" }]
+      }
+    
+    ]
+        
 }

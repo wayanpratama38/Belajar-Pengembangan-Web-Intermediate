@@ -98,15 +98,14 @@ class App {
     }
   }
 
- 
-
   async #setUpPushNotification() {
     const notificationButton = document.getElementById('notification-btn');
 
-    notificationButton.addEventListener('click', () => {
-      subscribe();
-    });
-
+    if (notificationButton) {
+      notificationButton.addEventListener('click', () => {
+        subscribe();
+      });
+    } 
   }
 
   async renderPage() {

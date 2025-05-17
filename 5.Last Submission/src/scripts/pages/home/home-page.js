@@ -69,28 +69,38 @@ export default class HomePage {
     }
     
     this.#clearCache = document.getElementById("delete-btn");
-    this.#clearCache.addEventListener("click",()=>{
-      // await this.#presenter.clearCache();
-      Swal.fire({
-        title:"Apakah ingin menghapus cache?",
-        text : "Perlu koneksi internet kembali untuk mendapatkan asset yang terdownload!",
-        icon: "warning",
-        showCancelButton : true,
-        confirmButtonColor : "#3085d6",
-        cancelButtonColor : "#d33",
-        confirmButtonText : "Iya, hapus cache",
-        cancelButtonText: "Jangan hapus cache"
-      }).then(async (result)=>{
+    this.#clearCache.addEventListener("click", async () => {
+      try {
+        const result = await Swal.fire({
+          title:"Apakah ingin menghapus cache?",
+          text : "Perlu koneksi internet kembali untuk mendapatkan asset yang terdownload!",
+          icon: "warning",
+          showCancelButton : true,
+          confirmButtonColor : "#3085d6",
+          cancelButtonColor : "#d33",
+          confirmButtonText : "Iya, hapus cache",
+          cancelButtonText: "Jangan hapus cache"
+        });
+
         if(result.isConfirmed){
-          // await this.#presenter.clearCache();
-          Swal.fire({
+          await this.#presenter.clearCache();
+          await Swal.fire({
             title : "Cache sudah terhapus",
-            text : "File asset sudah terhapus",
+            text : "File asset cerita lokal sudah terhapus.",
             icon : "success"
-          })
+          });
+        } else {
+          console.log('Cache clear cancelled by user.');
         }
-      })
-    })
+      } catch (error) {
+        console.error('Error during cache clear process:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "Gagal menghapus cache. Silakan coba lagi.",
+          icon: "error"
+        });
+      }
+    });
   }
 
   #setupSkipLink() {
