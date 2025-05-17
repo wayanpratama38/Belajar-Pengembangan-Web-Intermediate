@@ -1,4 +1,5 @@
 import StoryModel from '../../data/story-api';
+import Database from '../../database';
 
 export default class AddStoryPresenter {
   #view;
@@ -88,6 +89,7 @@ export default class AddStoryPresenter {
         this.#view.showStoryAddedMessage();
         this.#stopMediaStream();
         this.#view.navigateToHomepage();
+
       }
     } catch (error) {
       if (error.response && error.response.status === 413) {

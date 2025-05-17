@@ -8,6 +8,13 @@
   padding-block: 15px;
 }
 
+#delete-cache-container{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30px;
+}
+
 .container-flex {
   display: flex;
   justify-content: center;

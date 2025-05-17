@@ -27,7 +27,6 @@ class App {
     }
 
     this._setupDrawer();
-    // this._setupSubscriptionEventListener();
     this.renderPage();
   }
 
@@ -99,17 +98,7 @@ class App {
     }
   }
 
-  // _setupSubscriptionEventListener() {
-  //   document.addEventListener('subcribe-complete', (event) => {
-  //     console.log('App.js: Event "subcribe-complete" diterima!', event.detail);
-  //     const { success } = event.detail;
-
-  //     const notifyText = document.getElementById("notify-txt")
-  //     if(success){
-  //       notifyText.innerText = "Notified!"
-  //     }
-  //   });
-  // }
+ 
 
   async #setUpPushNotification() {
     const notificationButton = document.getElementById('notification-btn');
@@ -138,15 +127,17 @@ class App {
     }
 
     this.#currentPage = null;
-
+    
     if (isServiceAvailable()) {
       this.#setUpPushNotification();
     }
 
+    
     if (routeInfo.component) {
       this.#currentPage = routeInfo.component;
-
+      
       this.#content.innerHTML = await this.#currentPage.render();
+      
       await this.#currentPage.afterRender();
       document.title = routeInfo.title || 'App';
     } else {

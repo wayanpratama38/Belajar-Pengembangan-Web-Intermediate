@@ -1,17 +1,18 @@
 import NotificationModel from '../../data/notification-api';
 import StoryModel from '../../data/story-api';
+import Database from '../../database';
 
 export default class HomePresenter {
   #model;
-  #notificationModel;
+  #dbModel;
   #view;
   #storiesData;
   #storiesArray = [];
 
   constructor({ view }) {
     this.#model = StoryModel;
-    this.#notificationModel = NotificationModel;
     this.#view = view;
+    this.#dbModel = Database;
   }
 
   async init() {
@@ -19,6 +20,11 @@ export default class HomePresenter {
       this.#view.showLoading();
 
       await this.getAllStories();
+      const dbStories = await this.#dbModel.getAllStoriesFromDB();
+      if(dbStories && dbStories.length>0){
+        this.#storiesData = dbStories;
+      }
+
 
       this.#prepareStoriesArray();
       this.#view.showStories(this.#storiesData);
@@ -30,9 +36,18 @@ export default class HomePresenter {
     }
   }
 
+  async clearCache(){
+    await this.#dbModel.clearAllStories();
+  }
   async getAllStories() {
     try {
       const stories = await this.#model.getAllStories();
+      // const storiesFromDB = await this.#dbModel.getAllStoriesFromDB();
+      // if(storiesFromDB && storiesFromDB.length > 0){
+      //   this.#storiesData = storiesFromDB || [];
+      //   return this.#storiesData;
+      // }else{
+      await this.#dbModel.putAllStory(stories.listStory);
       this.#storiesData = stories.listStory || [];
       return this.#storiesData;
     } catch (error) {
@@ -42,11 +57,6 @@ export default class HomePresenter {
     }
   }
 
-  // async notifyMe(){
-  //   try{
-  //     const response = await this.#notificationModel.pushSubscribeNotification(this)
-  //   }
-  // }
 
   #prepareStoriesArray() {
     if (Array.isArray(this.#storiesData)) {
