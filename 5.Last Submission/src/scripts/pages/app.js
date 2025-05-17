@@ -1,7 +1,10 @@
 import { getActivePathname, resolveRoute } from '../routes/url-parser';
 import { clearAuthData, isLoggedIn } from '../utils/auth';
 import { isServiceAvailable } from '../utils';
-import { isCurrentPushSubscriptionAvailable, subscribe } from '../utils/notification';
+import {
+  isCurrentPushSubscriptionAvailable,
+  subscribe,
+} from '../utils/notification';
 
 class App {
   #content = null;
@@ -24,7 +27,7 @@ class App {
     }
 
     this._setupDrawer();
-    this._setupSubscriptionEventListener();
+    // this._setupSubscriptionEventListener();
     this.renderPage();
   }
 
@@ -94,21 +97,19 @@ class App {
         console.log('LOGOUT SUCCESS!');
       });
     }
-
-    this.#subscribeListener = navList.querySelector("#notification-btn");
   }
 
-  _setupSubscriptionEventListener() {
-    document.addEventListener('subcribe-complete', (event) => {
-      console.log('App.js: Event "subcribe-complete" diterima!', event.detail);
-      const { success } = event.detail;
+  // _setupSubscriptionEventListener() {
+  //   document.addEventListener('subcribe-complete', (event) => {
+  //     console.log('App.js: Event "subcribe-complete" diterima!', event.detail);
+  //     const { success } = event.detail;
 
-      const notifyText = document.getElementById("notify-txt")
-      if(success){
-        notifyText.innerText = "Notified!"
-      }
-    });
-  }
+  //     const notifyText = document.getElementById("notify-txt")
+  //     if(success){
+  //       notifyText.innerText = "Notified!"
+  //     }
+  //   });
+  // }
 
   async #setUpPushNotification() {
     const notificationButton = document.getElementById('notification-btn');
@@ -117,16 +118,14 @@ class App {
       subscribe();
     });
 
-    const notifyTxt = document.getElementById("notify-txt");
-    isCurrentPushSubscriptionAvailable().then(isSubscribe => {
-      if(isSubscribe){
-        notifyTxt.innerText = "Notified!";
-        
+    const notifyTxt = document.getElementById('notify-txt');
+    isCurrentPushSubscriptionAvailable().then((isSubscribe) => {
+      if (isSubscribe) {
+        notifyTxt.innerText = 'Notified!';
       } else {
-        notifyTxt.innerText = "Notify Me";
-        
+        notifyTxt.innerText = 'Notify Me';
       }
-    })
+    });
   }
 
   async renderPage() {

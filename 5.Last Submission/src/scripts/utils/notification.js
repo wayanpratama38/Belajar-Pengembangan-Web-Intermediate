@@ -72,7 +72,7 @@ export async function subscribe() {
 
   let eventDetail = {
     success: false,
-    alreadySubscribed : false,
+    alreadySubscribed: false,
   };
 
   document.dispatchEvent(
